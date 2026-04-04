@@ -1,11 +1,12 @@
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabaseServer";
 
 // GET /api/bot-config?botId=chat
 export async function GET(req: NextRequest) {
-  const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const user = await currentUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const userId = user.id;
 
   const botId = req.nextUrl.searchParams.get("botId");
   if (!botId) return NextResponse.json({ error: "botId required" }, { status: 400 });
@@ -26,8 +27,9 @@ export async function GET(req: NextRequest) {
 
 // POST /api/bot-config  body: { botId, config }
 export async function POST(req: NextRequest) {
-  const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const user = await currentUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const userId = user.id;
 
   const { botId, config } = await req.json() as { botId: string; config: Record<string, unknown> };
   if (!botId) return NextResponse.json({ error: "botId required" }, { status: 400 });
@@ -46,8 +48,9 @@ export async function POST(req: NextRequest) {
 
 // DELETE /api/bot-config?botId=chat
 export async function DELETE(req: NextRequest) {
-  const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const user = await currentUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const userId = user.id;
 
   const botId = req.nextUrl.searchParams.get("botId");
   if (!botId) return NextResponse.json({ error: "botId required" }, { status: 400 });
