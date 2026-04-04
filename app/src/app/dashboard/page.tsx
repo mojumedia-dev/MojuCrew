@@ -2,11 +2,17 @@ import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 const BOTS = [
-  { href: "/dashboard/chat", name: "MojuChat", icon: "💬", desc: "Live chat receptionist", status: "inactive" },
-  { href: "/dashboard/crm", name: "MojuCRM", icon: "📋", desc: "CRM & lead follow-up", status: "inactive" },
-  { href: "/dashboard/reviews", name: "MojuReviews", icon: "⭐", desc: "Review monitoring & responses", status: "inactive" },
-  { href: "/dashboard/research", name: "MojuResearch", icon: "🔍", desc: "Competitor & market insights", status: "inactive" },
-  { href: "/dashboard/content", name: "MojuContent", icon: "📣", desc: "Social & content automation", status: "inactive" },
+  { href: "/dashboard/chat", name: "MojuChat", icon: "💬", desc: "Live chat receptionist" },
+  { href: "/dashboard/crm", name: "MojuCRM", icon: "📋", desc: "CRM & lead follow-up" },
+  { href: "/dashboard/reviews", name: "MojuReviews", icon: "⭐", desc: "Review monitoring & responses" },
+  { href: "/dashboard/research", name: "MojuResearch", icon: "🔍", desc: "Competitor & market insights" },
+  { href: "/dashboard/content", name: "MojuContent", icon: "📣", desc: "Social & content automation" },
+  { href: "/dashboard/booking", name: "MojuBooking", icon: "📅", desc: "Appointment scheduling" },
+  { href: "/dashboard/billing", name: "MojuBilling", icon: "💰", desc: "Invoices & payment follow-up" },
+  { href: "/dashboard/leads", name: "MojuLeads", icon: "🎯", desc: "Lead nurture sequences" },
+  { href: "/dashboard/upsell", name: "MojuUpsell", icon: "📈", desc: "Repeat customer offers" },
+  { href: "/dashboard/support", name: "MojuSupport", icon: "🎧", desc: "After-sale support & FAQ" },
+  { href: "/dashboard/email", name: "MojuEmail", icon: "✉️", desc: "Email campaigns & newsletters" },
 ];
 
 export default async function DashboardPage() {

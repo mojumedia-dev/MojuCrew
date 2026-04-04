@@ -9,6 +9,12 @@ const BOTS = [
   { name: "MojuReviews", icon: "⭐", desc: "Review manager — monitors & responds to Google/Yelp reviews automatically" },
   { name: "MojuResearch", icon: "🔍", desc: "Market researcher — tracks competitors and delivers weekly insights" },
   { name: "MojuContent", icon: "📣", desc: "Social & content bot — drafts posts and keeps your brand active online" },
+  { name: "MojuBooking", icon: "📅", desc: "Booking bot — handles appointment scheduling end-to-end, 24/7" },
+  { name: "MojuBilling", icon: "💰", desc: "Billing bot — sends invoices, chases payments, tracks what's overdue" },
+  { name: "MojuLeads", icon: "🎯", desc: "Lead nurture bot — drips follow-up sequences on cold leads automatically" },
+  { name: "MojuUpsell", icon: "📈", desc: "Upsell bot — identifies past customers and pitches relevant offers" },
+  { name: "MojuSupport", icon: "🎧", desc: "Support bot — handles common after-sale questions and escalates when needed" },
+  { name: "MojuEmail", icon: "✉️", desc: "Email bot — writes and schedules newsletters and campaign sequences" },
 ];
 
 export default function HomePage() {

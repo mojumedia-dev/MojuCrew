@@ -11,6 +11,12 @@ const NAV_ITEMS = [
   { href: "/dashboard/reviews", label: "MojuReviews", icon: "⭐" },
   { href: "/dashboard/research", label: "MojuResearch", icon: "🔍" },
   { href: "/dashboard/content", label: "MojuContent", icon: "📣" },
+  { href: "/dashboard/booking", label: "MojuBooking", icon: "📅" },
+  { href: "/dashboard/billing", label: "MojuBilling", icon: "💰" },
+  { href: "/dashboard/leads", label: "MojuLeads", icon: "🎯" },
+  { href: "/dashboard/upsell", label: "MojuUpsell", icon: "📈" },
+  { href: "/dashboard/support", label: "MojuSupport", icon: "🎧" },
+  { href: "/dashboard/email", label: "MojuEmail", icon: "✉️" },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
