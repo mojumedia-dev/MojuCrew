@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import OnboardingWizard, { WizardStep } from "@/components/OnboardingWizard";
-import { getBotConfig, saveBotConfig, clearBotConfig, BotConfig } from "@/lib/botConfig";
+import { useBotConfig } from "@/hooks/useBotConfig";
 
 const TONES = ["Polite & professional", "Warm & personal", "Brief & direct"];
 const TRIGGERS = [
@@ -197,22 +196,9 @@ const STEPS: WizardStep[] = [
 ];
 
 export default function MojuReviewsPage() {
-  const [config, setConfig] = useState<BotConfig | null>(null);
-  const [loaded, setLoaded] = useState(false);
-  const [reconfiguring, setReconfiguring] = useState(false);
+  const { config, loaded, reconfiguring, setReconfiguring, save, clear } = useBotConfig("reviews");
 
-  useEffect(() => {
-    setConfig(getBotConfig("reviews"));
-    setLoaded(true);
-  }, []);
-
-  const handleComplete = (data: Record<string, unknown>) => {
-    saveBotConfig("reviews", data);
-    setConfig(getBotConfig("reviews")!);
-    setReconfiguring(false);
-  };
-
-  if (!loaded) return null;
+  if (!loaded) return <div className="text-sm text-gray-400">Loading...</div>;
 
   return (
     <div>
@@ -268,7 +254,7 @@ export default function MojuReviewsPage() {
               Reconfigure
             </button>
             <button
-              onClick={() => { clearBotConfig("reviews"); setConfig(null); }}
+              onClick={() => void clear()}
               className="px-5 py-2 text-sm text-red-500 border border-red-100 rounded-lg hover:bg-red-50 transition-colors"
             >
               Deactivate
@@ -278,7 +264,7 @@ export default function MojuReviewsPage() {
       ) : (
         <OnboardingWizard
           steps={STEPS}
-          onComplete={handleComplete}
+          onComplete={save}
           initialData={reconfiguring && config ? (config as Record<string, unknown>) : {}}
         />
       )}

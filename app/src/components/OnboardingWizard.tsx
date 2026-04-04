@@ -12,7 +12,7 @@ export interface WizardStep {
 
 interface Props {
   steps: WizardStep[];
-  onComplete: (data: Record<string, unknown>) => void;
+  onComplete: (data: Record<string, unknown>) => void | Promise<void>;
   initialData?: Record<string, unknown>;
 }
 

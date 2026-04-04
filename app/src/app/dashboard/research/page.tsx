@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import OnboardingWizard, { WizardStep } from "@/components/OnboardingWizard";
-import { getBotConfig, saveBotConfig, clearBotConfig, BotConfig } from "@/lib/botConfig";
+import { useBotConfig } from "@/hooks/useBotConfig";
 
 const FREQUENCIES = ["Daily", "Weekly", "Bi-weekly", "Monthly"];
 const INDUSTRIES = ["Restaurant / Food & Beverage", "Health & Wellness", "Beauty & Salon", "Home Services", "Retail", "Fitness / Gym", "Legal Services", "Real Estate", "Auto Services", "Other"];
@@ -97,19 +96,9 @@ const STEPS: WizardStep[] = [
 ];
 
 export default function MojuResearchPage() {
-  const [config, setConfig] = useState<BotConfig | null>(null);
-  const [loaded, setLoaded] = useState(false);
-  const [reconfiguring, setReconfiguring] = useState(false);
+  const { config, loaded, reconfiguring, setReconfiguring, save, clear } = useBotConfig("research");
 
-  useEffect(() => { setConfig(getBotConfig("research")); setLoaded(true); }, []);
-
-  const handleComplete = (data: Record<string, unknown>) => {
-    saveBotConfig("research", data);
-    setConfig(getBotConfig("research")!);
-    setReconfiguring(false);
-  };
-
-  if (!loaded) return null;
+  if (!loaded) return <div className="text-sm text-gray-400">Loading...</div>;
 
   return (
     <div>
@@ -136,11 +125,11 @@ export default function MojuResearchPage() {
           </div>
           <div className="flex gap-3">
             <button onClick={() => setReconfiguring(true)} className="px-5 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">Reconfigure</button>
-            <button onClick={() => { clearBotConfig("research"); setConfig(null); }} className="px-5 py-2 text-sm text-red-500 border border-red-100 rounded-lg hover:bg-red-50 transition-colors">Deactivate</button>
+            <button onClick={() => void clear()} className="px-5 py-2 text-sm text-red-500 border border-red-100 rounded-lg hover:bg-red-50 transition-colors">Deactivate</button>
           </div>
         </div>
       ) : (
-        <OnboardingWizard steps={STEPS} onComplete={handleComplete} initialData={reconfiguring && config ? (config as Record<string, unknown>) : {}} />
+        <OnboardingWizard steps={STEPS} onComplete={save} initialData={reconfiguring && config ? (config as Record<string, unknown>) : {}} />
       )}
     </div>
   );

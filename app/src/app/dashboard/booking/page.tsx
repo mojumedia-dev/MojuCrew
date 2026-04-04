@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import OnboardingWizard, { WizardStep } from "@/components/OnboardingWizard";
-import { getBotConfig, saveBotConfig, clearBotConfig, BotConfig } from "@/lib/botConfig";
+import { useBotConfig } from "@/hooks/useBotConfig";
 
 const TIMEZONES = [
   "America/New_York",
@@ -261,25 +260,12 @@ const STEPS: WizardStep[] = [
   },
 ];
 
+type Service = { name: string; duration: string; price: string };
+
 export default function MojuBookingPage() {
-  const [config, setConfig] = useState<BotConfig | null>(null);
-  const [loaded, setLoaded] = useState(false);
-  const [reconfiguring, setReconfiguring] = useState(false);
+  const { config, loaded, reconfiguring, setReconfiguring, save, clear } = useBotConfig("booking");
 
-  useEffect(() => {
-    setConfig(getBotConfig("booking"));
-    setLoaded(true);
-  }, []);
-
-  const handleComplete = (data: Record<string, unknown>) => {
-    saveBotConfig("booking", data);
-    setConfig(getBotConfig("booking")!);
-    setReconfiguring(false);
-  };
-
-  type Service = { name: string; duration: string; price: string };
-
-  if (!loaded) return null;
+  if (!loaded) return <div className="text-sm text-gray-400">Loading...</div>;
 
   return (
     <div>
@@ -343,7 +329,7 @@ export default function MojuBookingPage() {
               Reconfigure
             </button>
             <button
-              onClick={() => { clearBotConfig("booking"); setConfig(null); }}
+              onClick={() => void clear()}
               className="px-5 py-2 text-sm text-red-500 border border-red-100 rounded-lg hover:bg-red-50 transition-colors"
             >
               Deactivate
@@ -353,7 +339,7 @@ export default function MojuBookingPage() {
       ) : (
         <OnboardingWizard
           steps={STEPS}
-          onComplete={handleComplete}
+          onComplete={save}
           initialData={reconfiguring && config ? (config as Record<string, unknown>) : {}}
         />
       )}
