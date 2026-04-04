@@ -27,15 +27,24 @@ const STEPS: WizardStep[] = [
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-800 mb-1">Google Business Profile URL</label>
-          <input
-            type="url"
-            value={(data.googleUrl as string) ?? ""}
-            onChange={(e) => update({ googleUrl: e.target.value })}
-            placeholder="https://maps.google.com/maps?cid=..."
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
-          />
-          <p className="text-xs text-gray-600 mt-1">Find this in Google Maps → Share → Copy link</p>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Google Business locations</label>
+          {((data.locations as Array<{name: string; url: string}>) ?? []).map((loc, i) => {
+            const locations = (data.locations as Array<{name: string; url: string}>) ?? [];
+            return (
+              <div key={i} className="border border-gray-100 rounded-lg p-3 space-y-2 mb-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-gray-500">Location {i + 1}</span>
+                  {locations.length > 1 && (
+                    <button type="button" onClick={() => update({ locations: locations.filter((_, j) => j !== i) })} className="text-gray-300 hover:text-red-400 text-sm">✕</button>
+                  )}
+                </div>
+                <input type="text" value={loc.name} onChange={(e) => { const next = [...locations]; next[i] = { ...next[i], name: e.target.value }; update({ locations: next }); }} placeholder="Regal Homes - Midvale" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
+                <input type="url" value={loc.url} onChange={(e) => { const next = [...locations]; next[i] = { ...next[i], url: e.target.value }; update({ locations: next }); }} placeholder="https://maps.google.com/maps?cid=..." className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
+              </div>
+            );
+          })}
+          <button type="button" onClick={() => { const locations = (data.locations as Array<{name: string; url: string}>) ?? []; update({ locations: [...locations, { name: "", url: "" }] }); }} className="w-full py-2.5 border border-dashed border-gray-300 rounded-lg text-sm text-gray-600 hover:border-gray-500 transition-colors">+ Add location</button>
+          <p className="text-xs text-gray-600 mt-1">Find the URL in Google Maps → Share → Copy link</p>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-2">Monitor these platforms</label>
