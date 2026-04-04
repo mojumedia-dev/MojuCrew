@@ -1,23 +1,149 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import OnboardingWizard, { WizardStep } from "@/components/OnboardingWizard";
+import { getBotConfig, saveBotConfig, clearBotConfig, BotConfig } from "@/lib/botConfig";
+
+const ESCALATION_CHANNELS = ["Email", "SMS", "Both"];
+
+const STEPS: WizardStep[] = [
+  {
+    title: "Business info",
+    render: (data, update) => (
+      <div className="space-y-5">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Business name</label>
+          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Support email (customer-facing)</label>
+          <input type="email" value={(data.supportEmail as string) ?? ""} onChange={(e) => update({ supportEmail: e.target.value })} placeholder="support@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">What types of questions do customers ask after a sale?</label>
+          <textarea value={(data.supportContext as string) ?? ""} onChange={(e) => update({ supportContext: e.target.value })} rows={3} placeholder="Return policy, warranty claims, how to use product, delivery status, scheduling follow-up services..." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none" />
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Knowledge base",
+    render: (data, update) => {
+      const faqs = (data.faqs as Array<{ q: string; a: string }>) ?? [];
+      const setFaqs = (next: Array<{ q: string; a: string }>) => update({ faqs: next });
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-gray-500">Add your most common post-sale questions. MojuSupport will answer these automatically.</p>
+          {faqs.map((faq, i) => (
+            <div key={i} className="border border-gray-100 rounded-lg p-4 space-y-3">
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-xs font-medium text-gray-400 mt-1">Q{i + 1}</span>
+                <button type="button" onClick={() => setFaqs(faqs.filter((_, j) => j !== i))} className="text-gray-300 hover:text-red-400 text-sm">✕</button>
+              </div>
+              <input type="text" value={faq.q} onChange={(e) => { const next = [...faqs]; next[i] = { ...next[i], q: e.target.value }; setFaqs(next); }} placeholder="How do I request a refund?" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+              <textarea value={faq.a} onChange={(e) => { const next = [...faqs]; next[i] = { ...next[i], a: e.target.value }; setFaqs(next); }} rows={2} placeholder="Refunds are processed within 3-5 business days. Email us at billing@..." className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none" />
+            </div>
+          ))}
+          <button type="button" onClick={() => setFaqs([...faqs, { q: "", a: "" }])} className="w-full py-2.5 border border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:border-gray-400 transition-colors">+ Add FAQ</button>
+        </div>
+      );
+    },
+  },
+  {
+    title: "Escalation rules",
+    render: (data, update) => (
+      <div className="space-y-5">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Escalate to this person / team</label>
+          <input type="email" value={(data.escalationEmail as string) ?? ""} onChange={(e) => update({ escalationEmail: e.target.value })} placeholder="manager@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Notify via</label>
+          <div className="grid grid-cols-3 gap-3">
+            {ESCALATION_CHANNELS.map((c) => (
+              <button key={c} type="button" onClick={() => update({ escalationChannel: c })} className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${data.escalationChannel === c ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>{c}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Keywords that trigger immediate escalation</label>
+          <input type="text" value={(data.escalationKeywords as string) ?? ""} onChange={(e) => update({ escalationKeywords: e.target.value })} placeholder="refund, lawyer, broken, urgent, complaint" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <p className="text-xs text-gray-400 mt-1">Comma-separated. MojuSupport will hand off immediately when these words appear.</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Widget setup",
+    render: (data, update) => {
+      const script = `<script src="https://cdn.mojucrew.com/support.js" data-key="YOUR_KEY" data-business="${data.businessName ?? "Your Business"}"></script>`;
+      return (
+        <div className="space-y-5">
+          <p className="text-sm text-gray-500">Add the MojuSupport widget to your site so customers can get help directly from your order confirmation page, invoices, or anywhere you choose.</p>
+          <div className="bg-gray-900 rounded-lg p-4 relative">
+            <pre className="text-xs text-green-400 whitespace-pre-wrap break-all">{script}</pre>
+            <button type="button" onClick={() => navigator.clipboard.writeText(script)} className="absolute top-3 right-3 text-xs text-gray-400 hover:text-white bg-gray-700 px-2 py-1 rounded">Copy</button>
+          </div>
+          <div className="flex items-center justify-between py-3 border border-gray-100 rounded-lg px-4">
+            <div>
+              <p className="text-sm font-medium text-gray-700">Show ticket status to customers</p>
+              <p className="text-xs text-gray-400">Let customers track their support request</p>
+            </div>
+            <button type="button" onClick={() => update({ showTicketStatus: !data.showTicketStatus })} className={`w-11 h-6 rounded-full transition-colors ${data.showTicketStatus ? "bg-black" : "bg-gray-200"}`}>
+              <span className={`block w-5 h-5 rounded-full bg-white shadow transition-transform mx-0.5 ${data.showTicketStatus ? "translate-x-5" : "translate-x-0"}`} />
+            </button>
+          </div>
+        </div>
+      );
+    },
+  },
+];
+
 export default function MojuSupportPage() {
+  const [config, setConfig] = useState<BotConfig | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const [reconfiguring, setReconfiguring] = useState(false);
+
+  useEffect(() => { setConfig(getBotConfig("support")); setLoaded(true); }, []);
+
+  const handleComplete = (data: Record<string, unknown>) => {
+    saveBotConfig("support", data);
+    setConfig(getBotConfig("support")!);
+    setReconfiguring(false);
+  };
+
+  if (!loaded) return null;
+
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">🎧 MojuSupport</h1>
-        <p className="text-gray-500 mt-1">Handles common after-sale questions and escalates when needed.</p>
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">🎧 MojuSupport</h1>
+          <p className="text-gray-500 mt-1">Support bot — handles common after-sale questions and escalates when needed.</p>
+        </div>
+        {config && !reconfiguring && <span className="text-xs px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium">Active</span>}
       </div>
-      <div className="bg-white rounded-xl border p-8 text-center">
-        <div className="text-4xl mb-4">🎧</div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">MojuSupport is not yet activated</h2>
-        <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
-          MojuSupport handles your after-sale support queue — answers common questions using your knowledge base and escalates complex issues to you instantly.
-        </p>
-        <button className="bg-black text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-800">Activate MojuSupport</button>
-      </div>
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        {["Answers FAQs from your knowledge base", "Instant escalation for complex issues", "Tracks support ticket status"].map((f) => (
-          <div key={f} className="bg-gray-50 rounded-lg p-4 text-sm text-gray-600 border">✓ {f}</div>
-        ))}
-      </div>
+
+      {config && !reconfiguring ? (
+        <div className="space-y-5">
+          <div className="bg-white rounded-xl border p-6">
+            <h2 className="text-base font-semibold text-gray-900 mb-4">Configuration</h2>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div><span className="text-gray-400 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
+              <div><span className="text-gray-400 block mb-0.5">Support email</span><span className="text-gray-900 font-medium">{config.supportEmail as string ?? "—"}</span></div>
+              <div><span className="text-gray-400 block mb-0.5">FAQs</span><span className="text-gray-900 font-medium">{((config.faqs as unknown[]) ?? []).length} entries</span></div>
+              <div><span className="text-gray-400 block mb-0.5">Escalation channel</span><span className="text-gray-900 font-medium">{config.escalationChannel as string ?? "—"}</span></div>
+              <div className="col-span-2"><span className="text-gray-400 block mb-0.5">Escalation keywords</span><span className="text-gray-900 font-medium">{config.escalationKeywords as string ?? "—"}</span></div>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <button onClick={() => setReconfiguring(true)} className="px-5 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">Reconfigure</button>
+            <button onClick={() => { clearBotConfig("support"); setConfig(null); }} className="px-5 py-2 text-sm text-red-500 border border-red-100 rounded-lg hover:bg-red-50 transition-colors">Deactivate</button>
+          </div>
+        </div>
+      ) : (
+        <OnboardingWizard steps={STEPS} onComplete={handleComplete} initialData={reconfiguring && config ? (config as Record<string, unknown>) : {}} />
+      )}
     </div>
   );
 }
