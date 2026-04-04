@@ -15,7 +15,7 @@ const STEPS: WizardStep[] = [
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
-          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-2">Where do your leads come from?</label>
@@ -100,7 +100,7 @@ const STEPS: WizardStep[] = [
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Alert me when a lead replies</label>
-          <input type="email" value={(data.alertEmail as string) ?? ""} onChange={(e) => update({ alertEmail: e.target.value })} placeholder="you@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="email" value={(data.alertEmail as string) ?? ""} onChange={(e) => update({ alertEmail: e.target.value })} placeholder="you@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div className="flex items-center justify-between py-3 border border-gray-100 rounded-lg px-4">
           <div>

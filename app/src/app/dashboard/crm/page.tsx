@@ -14,7 +14,7 @@ const STEPS: WizardStep[] = [
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
-          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Industry</label>
@@ -25,7 +25,7 @@ const STEPS: WizardStep[] = [
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Notification email</label>
-          <input type="email" value={(data.notifyEmail as string) ?? ""} onChange={(e) => update({ notifyEmail: e.target.value })} placeholder="you@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="email" value={(data.notifyEmail as string) ?? ""} onChange={(e) => update({ notifyEmail: e.target.value })} placeholder="you@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
       </div>
     ),
@@ -41,7 +41,7 @@ const STEPS: WizardStep[] = [
           {stages.map((stage, i) => (
             <div key={i} className="flex items-center gap-2">
               <span className="text-xs text-gray-600 w-4">{i + 1}</span>
-              <input type="text" value={stage} onChange={(e) => { const next = [...stages]; next[i] = e.target.value; setStages(next); }} className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+              <input type="text" value={stage} onChange={(e) => { const next = [...stages]; next[i] = e.target.value; setStages(next); }} className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
               {stages.length > 2 && (
                 <button type="button" onClick={() => setStages(stages.filter((_, j) => j !== i))} className="text-gray-300 hover:text-red-400 text-sm px-1">✕</button>
               )}

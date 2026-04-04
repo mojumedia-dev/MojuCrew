@@ -18,11 +18,11 @@ const STEPS: WizardStep[] = [
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
-          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Coffee Co." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Coffee Co." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Website URL</label>
-          <input type="url" value={(data.websiteUrl as string) ?? ""} onChange={(e) => update({ websiteUrl: e.target.value })} placeholder="https://yoursite.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="url" value={(data.websiteUrl as string) ?? ""} onChange={(e) => update({ websiteUrl: e.target.value })} placeholder="https://yoursite.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Industry</label>
@@ -67,7 +67,7 @@ const STEPS: WizardStep[] = [
                 <span className="text-xs font-medium text-gray-400 mt-1">Q{i + 1}</span>
                 <button type="button" onClick={() => setFaqs(faqs.filter((_, j) => j !== i))} className="text-gray-300 hover:text-red-400 text-sm">✕</button>
               </div>
-              <input type="text" value={faq.q} onChange={(e) => { const next = [...faqs]; next[i] = { ...next[i], q: e.target.value }; setFaqs(next); }} placeholder="What are your hours?" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+              <input type="text" value={faq.q} onChange={(e) => { const next = [...faqs]; next[i] = { ...next[i], q: e.target.value }; setFaqs(next); }} placeholder="What are your hours?" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
               <textarea value={faq.a} onChange={(e) => { const next = [...faqs]; next[i] = { ...next[i], a: e.target.value }; setFaqs(next); }} rows={2} placeholder="We're open Mon–Sat, 9am–6pm." className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none" />
             </div>
           ))}

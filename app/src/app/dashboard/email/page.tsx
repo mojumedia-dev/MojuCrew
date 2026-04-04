@@ -15,15 +15,15 @@ const STEPS: WizardStep[] = [
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
-          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Coffee Co." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Coffee Co." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Send emails from</label>
-          <input type="email" value={(data.fromEmail as string) ?? ""} onChange={(e) => update({ fromEmail: e.target.value })} placeholder="hello@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="email" value={(data.fromEmail as string) ?? ""} onChange={(e) => update({ fromEmail: e.target.value })} placeholder="hello@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Reply-to email</label>
-          <input type="email" value={(data.replyTo as string) ?? ""} onChange={(e) => update({ replyTo: e.target.value })} placeholder="Same as above (or a different address)" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="email" value={(data.replyTo as string) ?? ""} onChange={(e) => update({ replyTo: e.target.value })} placeholder="Same as above (or a different address)" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">What do you want to tell your subscribers?</label>

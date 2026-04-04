@@ -13,7 +13,7 @@ const STEPS: WizardStep[] = [
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
-          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Industry</label>
@@ -24,7 +24,7 @@ const STEPS: WizardStep[] = [
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Your location (city or region)</label>
-          <input type="text" value={(data.location as string) ?? ""} onChange={(e) => update({ location: e.target.value })} placeholder="Miami, FL" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.location as string) ?? ""} onChange={(e) => update({ location: e.target.value })} placeholder="Miami, FL" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
       </div>
     ),
@@ -39,7 +39,7 @@ const STEPS: WizardStep[] = [
           <p className="text-sm text-gray-700">Add your top competitors. MojuResearch will monitor their pricing, offers, and changes.</p>
           {competitors.map((c, i) => (
             <div key={i} className="flex items-center gap-2">
-              <input type="text" value={c} onChange={(e) => { const next = [...competitors]; next[i] = e.target.value; setCompetitors(next); }} placeholder={`Competitor ${i + 1} (name or website)`} className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+              <input type="text" value={c} onChange={(e) => { const next = [...competitors]; next[i] = e.target.value; setCompetitors(next); }} placeholder={`Competitor ${i + 1} (name or website)`} className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
               {competitors.length > 1 && (
                 <button type="button" onClick={() => setCompetitors(competitors.filter((_, j) => j !== i))} className="text-gray-300 hover:text-red-400 text-sm px-1">✕</button>
               )}
@@ -60,7 +60,7 @@ const STEPS: WizardStep[] = [
           <p className="text-sm text-gray-700">What topics should MojuResearch track? Add keywords relevant to your business and market.</p>
           {keywords.map((kw, i) => (
             <div key={i} className="flex items-center gap-2">
-              <input type="text" value={kw} onChange={(e) => { const next = [...keywords]; next[i] = e.target.value; setKeywords(next); }} placeholder={`e.g. "hair salon trends Miami"`} className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+              <input type="text" value={kw} onChange={(e) => { const next = [...keywords]; next[i] = e.target.value; setKeywords(next); }} placeholder={`e.g. "hair salon trends Miami"`} className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
               {keywords.length > 1 && (
                 <button type="button" onClick={() => setKeywords(keywords.filter((_, j) => j !== i))} className="text-gray-300 hover:text-red-400 text-sm px-1">✕</button>
               )}
@@ -77,7 +77,7 @@ const STEPS: WizardStep[] = [
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Send reports to</label>
-          <input type="email" value={(data.reportEmail as string) ?? ""} onChange={(e) => update({ reportEmail: e.target.value })} placeholder="you@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="email" value={(data.reportEmail as string) ?? ""} onChange={(e) => update({ reportEmail: e.target.value })} placeholder="you@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-2">Report frequency</label>

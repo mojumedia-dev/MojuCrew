@@ -14,7 +14,7 @@ const STEPS: WizardStep[] = [
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
-          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Coffee Co." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Coffee Co." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">What do you sell / offer?</label>
@@ -22,7 +22,7 @@ const STEPS: WizardStep[] = [
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Target audience</label>
-          <input type="text" value={(data.audience as string) ?? ""} onChange={(e) => update({ audience: e.target.value })} placeholder="Local professionals, remote workers, coffee enthusiasts" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.audience as string) ?? ""} onChange={(e) => update({ audience: e.target.value })} placeholder="Local professionals, remote workers, coffee enthusiasts" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
       </div>
     ),
@@ -47,11 +47,11 @@ const STEPS: WizardStep[] = [
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Brand hashtags (optional)</label>
-          <input type="text" value={(data.hashtags as string) ?? ""} onChange={(e) => update({ hashtags: e.target.value })} placeholder="#acmecoffee #miamimornings" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.hashtags as string) ?? ""} onChange={(e) => update({ hashtags: e.target.value })} placeholder="#acmecoffee #miamimornings" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Anything to avoid in posts?</label>
-          <input type="text" value={(data.avoidTopics as string) ?? ""} onChange={(e) => update({ avoidTopics: e.target.value })} placeholder="Politics, competitor mentions, etc." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+          <input type="text" value={(data.avoidTopics as string) ?? ""} onChange={(e) => update({ avoidTopics: e.target.value })} placeholder="Politics, competitor mentions, etc." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
         </div>
       </div>
     ),

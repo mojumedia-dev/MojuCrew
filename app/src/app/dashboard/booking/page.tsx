@@ -29,7 +29,7 @@ const STEPS: WizardStep[] = [
             value={(data.businessName as string) ?? ""}
             onChange={(e) => update({ businessName: e.target.value })}
             placeholder="Acme Coffee Co."
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
           />
         </div>
         <div>
@@ -50,7 +50,7 @@ const STEPS: WizardStep[] = [
             value={(data.confirmationEmail as string) ?? ""}
             onChange={(e) => update({ confirmationEmail: e.target.value })}
             placeholder="you@yourbusiness.com"
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
           />
         </div>
       </div>
@@ -100,7 +100,7 @@ const STEPS: WizardStep[] = [
                 type="time"
                 value={openTime}
                 onChange={(e) => update({ openTime: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
               />
             </div>
             <div>
@@ -109,7 +109,7 @@ const STEPS: WizardStep[] = [
                 type="time"
                 value={closeTime}
                 onChange={(e) => update({ closeTime: e.target.value })}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
               />
             </div>
           </div>
@@ -164,7 +164,7 @@ const STEPS: WizardStep[] = [
                   setServices(next);
                 }}
                 placeholder="Haircut & Style"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
               />
               <div className="grid grid-cols-2 gap-3">
                 <select
@@ -188,7 +188,7 @@ const STEPS: WizardStep[] = [
                     setServices(next);
                   }}
                   placeholder="Price (e.g. $45)"
-                  className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                  className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
                 />
               </div>
             </div>

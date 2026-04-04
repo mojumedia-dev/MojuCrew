@@ -23,7 +23,7 @@ const STEPS: WizardStep[] = [
             value={(data.businessName as string) ?? ""}
             onChange={(e) => update({ businessName: e.target.value })}
             placeholder="Acme Coffee Co."
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
           />
         </div>
         <div>
@@ -33,7 +33,7 @@ const STEPS: WizardStep[] = [
             value={(data.googleUrl as string) ?? ""}
             onChange={(e) => update({ googleUrl: e.target.value })}
             placeholder="https://maps.google.com/maps?cid=..."
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
           />
           <p className="text-xs text-gray-600 mt-1">Find this in Google Maps → Share → Copy link</p>
         </div>
@@ -95,7 +95,7 @@ const STEPS: WizardStep[] = [
             value={(data.alertEmail as string) ?? ""}
             onChange={(e) => update({ alertEmail: e.target.value })}
             placeholder="you@yourbusiness.com"
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
           />
           <p className="text-xs text-gray-600 mt-1">You'll get notified instantly for any 1–2 star reviews.</p>
         </div>
