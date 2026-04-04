@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 
 const BOTS = [
   { name: "MojuChat", icon: "💬", desc: "AI receptionist — answers questions, books appointments, qualifies leads 24/7" },
@@ -12,19 +12,22 @@ const BOTS = [
 ];
 
 export default function HomePage() {
+  const { isSignedIn } = useAuth();
+
   return (
     <main className="min-h-screen bg-white">
       {/* Nav */}
       <nav className="border-b px-6 py-4 flex items-center justify-between">
         <span className="text-xl font-bold text-gray-900">MojuCrew</span>
         <div className="flex items-center gap-4">
-          <SignedOut>
-            <Link href="/sign-in" className="text-sm text-gray-600 hover:text-gray-900">Sign in</Link>
-            <Link href="/sign-up" className="text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">Get started</Link>
-          </SignedOut>
-          <SignedIn>
+          {isSignedIn ? (
             <Link href="/dashboard" className="text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">Dashboard</Link>
-          </SignedIn>
+          ) : (
+            <>
+              <Link href="/sign-in" className="text-sm text-gray-600 hover:text-gray-900">Sign in</Link>
+              <Link href="/sign-up" className="text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">Get started</Link>
+            </>
+          )}
         </div>
       </nav>
 
