@@ -136,7 +136,7 @@ const STEPS: WizardStep[] = [
             onChange={(e) => update({ requestMessage: e.target.value })}
             rows={4}
             placeholder="Hi [Name], thanks for visiting us! If you enjoyed your experience, we'd love a quick review — it really helps our small business. [Google Link]"
-            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"
+            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none text-gray-900"
           />
           <p className="text-xs text-gray-600 mt-1">Use [Name] and [Google Link] as placeholders.</p>
         </div>
