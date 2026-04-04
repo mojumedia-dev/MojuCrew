@@ -23,7 +23,7 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Business name</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
           <input
             type="text"
             value={(data.businessName as string) ?? ""}
@@ -33,7 +33,7 @@ const STEPS: WizardStep[] = [
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Timezone</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Timezone</label>
           <select
             value={(data.timezone as string) ?? ""}
             onChange={(e) => update({ timezone: e.target.value })}
@@ -44,7 +44,7 @@ const STEPS: WizardStep[] = [
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Booking confirmation email</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Booking confirmation email</label>
           <input
             type="email"
             value={(data.confirmationEmail as string) ?? ""}
@@ -66,7 +66,7 @@ const STEPS: WizardStep[] = [
       return (
         <div className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">Days open</label>
+            <label className="block text-sm font-medium text-gray-800 mb-3">Days open</label>
             <div className="flex gap-2 flex-wrap">
               {DAYS.map((d) => {
                 const active = activeDays.includes(d);
@@ -95,7 +95,7 @@ const STEPS: WizardStep[] = [
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Opens at</label>
+              <label className="block text-sm font-medium text-gray-800 mb-1">Opens at</label>
               <input
                 type="time"
                 value={openTime}
@@ -104,7 +104,7 @@ const STEPS: WizardStep[] = [
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Closes at</label>
+              <label className="block text-sm font-medium text-gray-800 mb-1">Closes at</label>
               <input
                 type="time"
                 value={closeTime}
@@ -114,7 +114,7 @@ const STEPS: WizardStep[] = [
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Buffer between bookings</label>
+            <label className="block text-sm font-medium text-gray-800 mb-1">Buffer between bookings</label>
             <select
               value={(data.buffer as string) ?? ""}
               onChange={(e) => update({ buffer: e.target.value })}
@@ -140,7 +140,7 @@ const STEPS: WizardStep[] = [
 
       return (
         <div className="space-y-4">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-700">
             Add the services customers can book. MojuBooking will offer these as options.
           </p>
           {services.map((svc, i) => (
@@ -208,7 +208,7 @@ const STEPS: WizardStep[] = [
     title: "Calendar sync",
     render: (data, update) => (
       <div className="space-y-5">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-700">
           Connect Google Calendar so MojuBooking can check your availability in real time and add new bookings automatically.
         </p>
         <button
@@ -241,8 +241,8 @@ const STEPS: WizardStep[] = [
         )}
         <div className="flex items-center justify-between py-3 border border-gray-100 rounded-lg px-4">
           <div>
-            <p className="text-sm font-medium text-gray-700">Send SMS reminders</p>
-            <p className="text-xs text-gray-400">Remind customers 24h and 1h before their booking</p>
+            <p className="text-sm font-medium text-gray-800">Send SMS reminders</p>
+            <p className="text-xs text-gray-600">Remind customers 24h and 1h before their booking</p>
           </div>
           <button
             type="button"
@@ -285,37 +285,37 @@ export default function MojuBookingPage() {
             <h2 className="text-base font-semibold text-gray-900 mb-4">Configuration</h2>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-gray-400 block mb-0.5">Business</span>
+                <span className="text-gray-500 block mb-0.5">Business</span>
                 <span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Timezone</span>
+                <span className="text-gray-500 block mb-0.5">Timezone</span>
                 <span className="text-gray-900 font-medium">{config.timezone as string ?? "—"}</span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Hours</span>
+                <span className="text-gray-500 block mb-0.5">Hours</span>
                 <span className="text-gray-900 font-medium">
                   {config.openTime as string ?? "—"} – {config.closeTime as string ?? "—"}
                 </span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Open days</span>
+                <span className="text-gray-500 block mb-0.5">Open days</span>
                 <span className="text-gray-900 font-medium">
                   {((config.activeDays as string[]) ?? []).join(", ") || "—"}
                 </span>
               </div>
               <div className="col-span-2">
-                <span className="text-gray-400 block mb-0.5">Services</span>
+                <span className="text-gray-500 block mb-0.5">Services</span>
                 <span className="text-gray-900 font-medium">
                   {((config.services as Service[]) ?? []).map((s) => s.name).filter(Boolean).join(", ") || "—"}
                 </span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Calendar</span>
+                <span className="text-gray-500 block mb-0.5">Calendar</span>
                 <span className="text-gray-900 font-medium">{config.calendarConnected ? "Connected" : "Not connected"}</span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">SMS reminders</span>
+                <span className="text-gray-500 block mb-0.5">SMS reminders</span>
                 <span className="text-gray-900 font-medium">{config.smsReminders ? "On" : "Off"}</span>
               </div>
             </div>

@@ -13,15 +13,15 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Business name</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
           <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services LLC" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Invoice from email</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Invoice from email</label>
           <input type="email" value={(data.invoiceEmail as string) ?? ""} onChange={(e) => update({ invoiceEmail: e.target.value })} placeholder="billing@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Currency</label>
           <select value={(data.currency as string) ?? ""} onChange={(e) => update({ currency: e.target.value })} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black bg-white">
             <option value="">Select currency...</option>
             {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -35,21 +35,21 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Default payment terms</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Default payment terms</label>
           <div className="grid grid-cols-3 gap-2">
             {PAYMENT_TERMS.map((t) => (
-              <button key={t} type="button" onClick={() => update({ paymentTerms: t })} className={`py-2 rounded-lg border text-sm font-medium transition-colors ${data.paymentTerms === t ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>{t}</button>
+              <button key={t} type="button" onClick={() => update({ paymentTerms: t })} className={`py-2 rounded-lg border text-sm font-medium transition-colors ${data.paymentTerms === t ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"}`}>{t}</button>
             ))}
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Invoice footer / notes</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Invoice footer / notes</label>
           <textarea value={(data.invoiceFooter as string) ?? ""} onChange={(e) => update({ invoiceFooter: e.target.value })} rows={2} placeholder="Thank you for your business! Payment via bank transfer or card." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none" />
         </div>
         <div className="flex items-center justify-between py-3 border border-gray-100 rounded-lg px-4">
           <div>
-            <p className="text-sm font-medium text-gray-700">Include late fee warning</p>
-            <p className="text-xs text-gray-400">Mention a 1.5%/month late fee on overdue invoices</p>
+            <p className="text-sm font-medium text-gray-800">Include late fee warning</p>
+            <p className="text-xs text-gray-600">Mention a 1.5%/month late fee on overdue invoices</p>
           </div>
           <button type="button" onClick={() => update({ lateFee: !data.lateFee })} className={`w-11 h-6 rounded-full transition-colors ${data.lateFee ? "bg-black" : "bg-gray-200"}`}>
             <span className={`block w-5 h-5 rounded-full bg-white shadow transition-transform mx-0.5 ${data.lateFee ? "translate-x-5" : "translate-x-0"}`} />
@@ -64,12 +64,12 @@ const STEPS: WizardStep[] = [
       const reminders = (data.reminders as string[]) ?? ["On due date", "7 days overdue"];
       return (
         <div className="space-y-4">
-          <p className="text-sm text-gray-500">MojuBilling sends automatic payment reminders at these intervals. Select all that apply.</p>
+          <p className="text-sm text-gray-700">MojuBilling sends automatic payment reminders at these intervals. Select all that apply.</p>
           <div className="space-y-2">
             {REMINDER_TIMING.map((t) => {
               const active = reminders.includes(t);
               return (
-                <button key={t} type="button" onClick={() => update({ reminders: active ? reminders.filter((x) => x !== t) : [...reminders, t] })} className={`w-full flex items-center gap-3 py-2.5 px-4 rounded-lg border text-sm font-medium text-left transition-colors ${active ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
+                <button key={t} type="button" onClick={() => update({ reminders: active ? reminders.filter((x) => x !== t) : [...reminders, t] })} className={`w-full flex items-center gap-3 py-2.5 px-4 rounded-lg border text-sm font-medium text-left transition-colors ${active ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"}`}>
                   <span className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${active ? "bg-white border-white" : "border-gray-400"}`}>
                     {active && <span className="text-black text-xs">✓</span>}
                   </span>
@@ -86,7 +86,7 @@ const STEPS: WizardStep[] = [
     title: "Connect payment processor",
     render: (data, update) => (
       <div className="space-y-5">
-        <p className="text-sm text-gray-500">Connect a payment processor so customers can pay invoices instantly via a link.</p>
+        <p className="text-sm text-gray-700">Connect a payment processor so customers can pay invoices instantly via a link.</p>
         <div className="space-y-3">
           {["Stripe", "Square", "PayPal"].map((processor) => (
             <button key={processor} type="button" onClick={() => update({ paymentProcessor: processor })} className={`w-full flex items-center gap-3 py-3 px-5 rounded-lg border text-sm font-medium transition-colors ${data.paymentProcessor === processor ? "bg-green-50 border-green-200 text-green-700" : "border-gray-200 text-gray-700 hover:border-gray-400"}`}>
@@ -120,11 +120,11 @@ export default function MojuBillingPage() {
           <div className="bg-white rounded-xl border p-6">
             <h2 className="text-base font-semibold text-gray-900 mb-4">Configuration</h2>
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><span className="text-gray-400 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Currency</span><span className="text-gray-900 font-medium">{config.currency as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Payment terms</span><span className="text-gray-900 font-medium">{config.paymentTerms as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Payment processor</span><span className="text-gray-900 font-medium">{config.paymentProcessor as string ?? "Not connected"}</span></div>
-              <div className="col-span-2"><span className="text-gray-400 block mb-0.5">Reminders</span><span className="text-gray-900 font-medium">{((config.reminders as string[]) ?? []).join(", ") || "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Currency</span><span className="text-gray-900 font-medium">{config.currency as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Payment terms</span><span className="text-gray-900 font-medium">{config.paymentTerms as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Payment processor</span><span className="text-gray-900 font-medium">{config.paymentProcessor as string ?? "Not connected"}</span></div>
+              <div className="col-span-2"><span className="text-gray-500 block mb-0.5">Reminders</span><span className="text-gray-900 font-medium">{((config.reminders as string[]) ?? []).join(", ") || "—"}</span></div>
             </div>
           </div>
           <div className="flex gap-3">

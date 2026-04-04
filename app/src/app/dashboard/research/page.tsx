@@ -12,18 +12,18 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Business name</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
           <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Industry</label>
           <select value={(data.industry as string) ?? ""} onChange={(e) => update({ industry: e.target.value })} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black bg-white">
             <option value="">Select industry...</option>
             {INDUSTRIES.map((i) => <option key={i} value={i}>{i}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Your location (city or region)</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Your location (city or region)</label>
           <input type="text" value={(data.location as string) ?? ""} onChange={(e) => update({ location: e.target.value })} placeholder="Miami, FL" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
       </div>
@@ -36,7 +36,7 @@ const STEPS: WizardStep[] = [
       const setCompetitors = (next: string[]) => update({ competitors: next });
       return (
         <div className="space-y-4">
-          <p className="text-sm text-gray-500">Add your top competitors. MojuResearch will monitor their pricing, offers, and changes.</p>
+          <p className="text-sm text-gray-700">Add your top competitors. MojuResearch will monitor their pricing, offers, and changes.</p>
           {competitors.map((c, i) => (
             <div key={i} className="flex items-center gap-2">
               <input type="text" value={c} onChange={(e) => { const next = [...competitors]; next[i] = e.target.value; setCompetitors(next); }} placeholder={`Competitor ${i + 1} (name or website)`} className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
@@ -57,7 +57,7 @@ const STEPS: WizardStep[] = [
       const setKeywords = (next: string[]) => update({ keywords: next });
       return (
         <div className="space-y-4">
-          <p className="text-sm text-gray-500">What topics should MojuResearch track? Add keywords relevant to your business and market.</p>
+          <p className="text-sm text-gray-700">What topics should MojuResearch track? Add keywords relevant to your business and market.</p>
           {keywords.map((kw, i) => (
             <div key={i} className="flex items-center gap-2">
               <input type="text" value={kw} onChange={(e) => { const next = [...keywords]; next[i] = e.target.value; setKeywords(next); }} placeholder={`e.g. "hair salon trends Miami"`} className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
@@ -76,14 +76,14 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Send reports to</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Send reports to</label>
           <input type="email" value={(data.reportEmail as string) ?? ""} onChange={(e) => update({ reportEmail: e.target.value })} placeholder="you@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Report frequency</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Report frequency</label>
           <div className="grid grid-cols-2 gap-3">
             {FREQUENCIES.map((f) => (
-              <button key={f} type="button" onClick={() => update({ frequency: f })} className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${data.frequency === f ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>{f}</button>
+              <button key={f} type="button" onClick={() => update({ frequency: f })} className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${data.frequency === f ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"}`}>{f}</button>
             ))}
           </div>
         </div>
@@ -115,12 +115,12 @@ export default function MojuResearchPage() {
           <div className="bg-white rounded-xl border p-6">
             <h2 className="text-base font-semibold text-gray-900 mb-4">Configuration</h2>
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><span className="text-gray-400 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Location</span><span className="text-gray-900 font-medium">{config.location as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Competitors tracked</span><span className="text-gray-900 font-medium">{((config.competitors as string[]) ?? []).filter(Boolean).length}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Keywords tracked</span><span className="text-gray-900 font-medium">{((config.keywords as string[]) ?? []).filter(Boolean).length}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Report frequency</span><span className="text-gray-900 font-medium">{config.frequency as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Report email</span><span className="text-gray-900 font-medium">{config.reportEmail as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Location</span><span className="text-gray-900 font-medium">{config.location as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Competitors tracked</span><span className="text-gray-900 font-medium">{((config.competitors as string[]) ?? []).filter(Boolean).length}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Keywords tracked</span><span className="text-gray-900 font-medium">{((config.keywords as string[]) ?? []).filter(Boolean).length}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Report frequency</span><span className="text-gray-900 font-medium">{config.frequency as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Report email</span><span className="text-gray-900 font-medium">{config.reportEmail as string ?? "—"}</span></div>
             </div>
           </div>
           <div className="flex gap-3">

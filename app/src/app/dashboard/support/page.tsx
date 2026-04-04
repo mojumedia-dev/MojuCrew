@@ -11,15 +11,15 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Business name</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
           <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Services" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Support email (customer-facing)</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Support email (customer-facing)</label>
           <input type="email" value={(data.supportEmail as string) ?? ""} onChange={(e) => update({ supportEmail: e.target.value })} placeholder="support@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">What types of questions do customers ask after a sale?</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">What types of questions do customers ask after a sale?</label>
           <textarea value={(data.supportContext as string) ?? ""} onChange={(e) => update({ supportContext: e.target.value })} rows={3} placeholder="Return policy, warranty claims, how to use product, delivery status, scheduling follow-up services..." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none" />
         </div>
       </div>
@@ -32,7 +32,7 @@ const STEPS: WizardStep[] = [
       const setFaqs = (next: Array<{ q: string; a: string }>) => update({ faqs: next });
       return (
         <div className="space-y-4">
-          <p className="text-sm text-gray-500">Add your most common post-sale questions. MojuSupport will answer these automatically.</p>
+          <p className="text-sm text-gray-700">Add your most common post-sale questions. MojuSupport will answer these automatically.</p>
           {faqs.map((faq, i) => (
             <div key={i} className="border border-gray-100 rounded-lg p-4 space-y-3">
               <div className="flex items-start justify-between gap-2">
@@ -53,21 +53,21 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Escalate to this person / team</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Escalate to this person / team</label>
           <input type="email" value={(data.escalationEmail as string) ?? ""} onChange={(e) => update({ escalationEmail: e.target.value })} placeholder="manager@yourbusiness.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Notify via</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Notify via</label>
           <div className="grid grid-cols-3 gap-3">
             {ESCALATION_CHANNELS.map((c) => (
-              <button key={c} type="button" onClick={() => update({ escalationChannel: c })} className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${data.escalationChannel === c ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>{c}</button>
+              <button key={c} type="button" onClick={() => update({ escalationChannel: c })} className={`py-2.5 rounded-lg border text-sm font-medium transition-colors ${data.escalationChannel === c ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"}`}>{c}</button>
             ))}
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Keywords that trigger immediate escalation</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Keywords that trigger immediate escalation</label>
           <input type="text" value={(data.escalationKeywords as string) ?? ""} onChange={(e) => update({ escalationKeywords: e.target.value })} placeholder="refund, lawyer, broken, urgent, complaint" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
-          <p className="text-xs text-gray-400 mt-1">Comma-separated. MojuSupport will hand off immediately when these words appear.</p>
+          <p className="text-xs text-gray-600 mt-1">Comma-separated. MojuSupport will hand off immediately when these words appear.</p>
         </div>
       </div>
     ),
@@ -78,15 +78,15 @@ const STEPS: WizardStep[] = [
       const script = `<script src="https://cdn.mojucrew.com/support.js" data-key="YOUR_KEY" data-business="${data.businessName ?? "Your Business"}"></script>`;
       return (
         <div className="space-y-5">
-          <p className="text-sm text-gray-500">Add the MojuSupport widget to your site so customers can get help directly from your order confirmation page, invoices, or anywhere you choose.</p>
+          <p className="text-sm text-gray-700">Add the MojuSupport widget to your site so customers can get help directly from your order confirmation page, invoices, or anywhere you choose.</p>
           <div className="bg-gray-900 rounded-lg p-4 relative">
             <pre className="text-xs text-green-400 whitespace-pre-wrap break-all">{script}</pre>
-            <button type="button" onClick={() => navigator.clipboard.writeText(script)} className="absolute top-3 right-3 text-xs text-gray-400 hover:text-white bg-gray-700 px-2 py-1 rounded">Copy</button>
+            <button type="button" onClick={() => navigator.clipboard.writeText(script)} className="absolute top-3 right-3 text-xs text-gray-600 hover:text-white bg-gray-700 px-2 py-1 rounded">Copy</button>
           </div>
           <div className="flex items-center justify-between py-3 border border-gray-100 rounded-lg px-4">
             <div>
-              <p className="text-sm font-medium text-gray-700">Show ticket status to customers</p>
-              <p className="text-xs text-gray-400">Let customers track their support request</p>
+              <p className="text-sm font-medium text-gray-800">Show ticket status to customers</p>
+              <p className="text-xs text-gray-600">Let customers track their support request</p>
             </div>
             <button type="button" onClick={() => update({ showTicketStatus: !data.showTicketStatus })} className={`w-11 h-6 rounded-full transition-colors ${data.showTicketStatus ? "bg-black" : "bg-gray-200"}`}>
               <span className={`block w-5 h-5 rounded-full bg-white shadow transition-transform mx-0.5 ${data.showTicketStatus ? "translate-x-5" : "translate-x-0"}`} />
@@ -118,11 +118,11 @@ export default function MojuSupportPage() {
           <div className="bg-white rounded-xl border p-6">
             <h2 className="text-base font-semibold text-gray-900 mb-4">Configuration</h2>
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><span className="text-gray-400 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Support email</span><span className="text-gray-900 font-medium">{config.supportEmail as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">FAQs</span><span className="text-gray-900 font-medium">{((config.faqs as unknown[]) ?? []).length} entries</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Escalation channel</span><span className="text-gray-900 font-medium">{config.escalationChannel as string ?? "—"}</span></div>
-              <div className="col-span-2"><span className="text-gray-400 block mb-0.5">Escalation keywords</span><span className="text-gray-900 font-medium">{config.escalationKeywords as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Support email</span><span className="text-gray-900 font-medium">{config.supportEmail as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">FAQs</span><span className="text-gray-900 font-medium">{((config.faqs as unknown[]) ?? []).length} entries</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Escalation channel</span><span className="text-gray-900 font-medium">{config.escalationChannel as string ?? "—"}</span></div>
+              <div className="col-span-2"><span className="text-gray-500 block mb-0.5">Escalation keywords</span><span className="text-gray-900 font-medium">{config.escalationKeywords as string ?? "—"}</span></div>
             </div>
           </div>
           <div className="flex gap-3">

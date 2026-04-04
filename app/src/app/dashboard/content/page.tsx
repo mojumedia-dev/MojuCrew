@@ -13,15 +13,15 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Business name</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
           <input type="text" value={(data.businessName as string) ?? ""} onChange={(e) => update({ businessName: e.target.value })} placeholder="Acme Coffee Co." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">What do you sell / offer?</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">What do you sell / offer?</label>
           <textarea value={(data.offering as string) ?? ""} onChange={(e) => update({ offering: e.target.value })} rows={2} placeholder="Specialty coffee, pastries, and a cozy workspace in downtown Miami." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Target audience</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Target audience</label>
           <input type="text" value={(data.audience as string) ?? ""} onChange={(e) => update({ audience: e.target.value })} placeholder="Local professionals, remote workers, coffee enthusiasts" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
       </div>
@@ -32,7 +32,7 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Content tone (pick all that apply)</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Content tone (pick all that apply)</label>
           <div className="flex flex-wrap gap-2">
             {TONES.map((t) => {
               const selected = ((data.tones as string[]) ?? []).includes(t);
@@ -40,17 +40,17 @@ const STEPS: WizardStep[] = [
                 <button key={t} type="button" onClick={() => {
                   const current = (data.tones as string[]) ?? [];
                   update({ tones: selected ? current.filter((x) => x !== t) : [...current, t] });
-                }} className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${selected ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>{t}</button>
+                }} className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${selected ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"}`}>{t}</button>
               );
             })}
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Brand hashtags (optional)</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Brand hashtags (optional)</label>
           <input type="text" value={(data.hashtags as string) ?? ""} onChange={(e) => update({ hashtags: e.target.value })} placeholder="#acmecoffee #miamimornings" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Anything to avoid in posts?</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Anything to avoid in posts?</label>
           <input type="text" value={(data.avoidTopics as string) ?? ""} onChange={(e) => update({ avoidTopics: e.target.value })} placeholder="Politics, competitor mentions, etc." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black" />
         </div>
       </div>
@@ -61,7 +61,7 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Post to these platforms</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Post to these platforms</label>
           <div className="flex flex-wrap gap-2">
             {PLATFORMS.map((p) => {
               const active = ((data.platforms as string[]) ?? []).includes(p);
@@ -69,16 +69,16 @@ const STEPS: WizardStep[] = [
                 <button key={p} type="button" onClick={() => {
                   const current = (data.platforms as string[]) ?? [];
                   update({ platforms: active ? current.filter((x) => x !== p) : [...current, p] });
-                }} className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${active ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>{p}</button>
+                }} className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${active ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"}`}>{p}</button>
               );
             })}
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Posting frequency</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Posting frequency</label>
           <div className="space-y-2">
             {FREQUENCIES.map((f) => (
-              <button key={f} type="button" onClick={() => update({ frequency: f })} className={`w-full py-2.5 px-4 rounded-lg border text-sm font-medium text-left transition-colors ${data.frequency === f ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>{f}</button>
+              <button key={f} type="button" onClick={() => update({ frequency: f })} className={`w-full py-2.5 px-4 rounded-lg border text-sm font-medium text-left transition-colors ${data.frequency === f ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"}`}>{f}</button>
             ))}
           </div>
         </div>
@@ -89,7 +89,7 @@ const STEPS: WizardStep[] = [
     title: "Connect accounts",
     render: (data, update) => (
       <div className="space-y-5">
-        <p className="text-sm text-gray-500">Connect your social accounts so MojuContent can post on your behalf. You can approve posts before they go live.</p>
+        <p className="text-sm text-gray-700">Connect your social accounts so MojuContent can post on your behalf. You can approve posts before they go live.</p>
         <div className="space-y-3">
           {(data.platforms as string[] ?? ["Instagram", "Facebook"]).map((platform) => (
             <button key={platform} type="button" onClick={() => {
@@ -103,8 +103,8 @@ const STEPS: WizardStep[] = [
         </div>
         <div className="flex items-center justify-between py-3 border border-gray-100 rounded-lg px-4">
           <div>
-            <p className="text-sm font-medium text-gray-700">Require approval before posting</p>
-            <p className="text-xs text-gray-400">Review each post before MojuContent publishes it</p>
+            <p className="text-sm font-medium text-gray-800">Require approval before posting</p>
+            <p className="text-xs text-gray-600">Review each post before MojuContent publishes it</p>
           </div>
           <button type="button" onClick={() => update({ requireApproval: !data.requireApproval })} className={`w-11 h-6 rounded-full transition-colors ${data.requireApproval ? "bg-black" : "bg-gray-200"}`}>
             <span className={`block w-5 h-5 rounded-full bg-white shadow transition-transform mx-0.5 ${data.requireApproval ? "translate-x-5" : "translate-x-0"}`} />
@@ -135,11 +135,11 @@ export default function MojuContentPage() {
           <div className="bg-white rounded-xl border p-6">
             <h2 className="text-base font-semibold text-gray-900 mb-4">Configuration</h2>
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div><span className="text-gray-400 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Frequency</span><span className="text-gray-900 font-medium">{config.frequency as string ?? "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Platforms</span><span className="text-gray-900 font-medium">{((config.platforms as string[]) ?? []).join(", ") || "—"}</span></div>
-              <div><span className="text-gray-400 block mb-0.5">Approval required</span><span className="text-gray-900 font-medium">{config.requireApproval ? "Yes" : "No"}</span></div>
-              <div className="col-span-2"><span className="text-gray-400 block mb-0.5">Tones</span><span className="text-gray-900 font-medium">{((config.tones as string[]) ?? []).join(", ") || "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Business</span><span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Frequency</span><span className="text-gray-900 font-medium">{config.frequency as string ?? "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Platforms</span><span className="text-gray-900 font-medium">{((config.platforms as string[]) ?? []).join(", ") || "—"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Approval required</span><span className="text-gray-900 font-medium">{config.requireApproval ? "Yes" : "No"}</span></div>
+              <div className="col-span-2"><span className="text-gray-500 block mb-0.5">Tones</span><span className="text-gray-900 font-medium">{((config.tones as string[]) ?? []).join(", ") || "—"}</span></div>
             </div>
           </div>
           <div className="flex gap-3">

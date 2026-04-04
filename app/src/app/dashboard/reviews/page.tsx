@@ -17,7 +17,7 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Business name</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Business name</label>
           <input
             type="text"
             value={(data.businessName as string) ?? ""}
@@ -27,7 +27,7 @@ const STEPS: WizardStep[] = [
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Google Business Profile URL</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Google Business Profile URL</label>
           <input
             type="url"
             value={(data.googleUrl as string) ?? ""}
@@ -35,10 +35,10 @@ const STEPS: WizardStep[] = [
             placeholder="https://maps.google.com/maps?cid=..."
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
           />
-          <p className="text-xs text-gray-400 mt-1">Find this in Google Maps → Share → Copy link</p>
+          <p className="text-xs text-gray-600 mt-1">Find this in Google Maps → Share → Copy link</p>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Monitor these platforms</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Monitor these platforms</label>
           <div className="flex gap-3">
             {["Google", "Yelp"].map((p) => {
               const platforms = (data.platforms as string[]) ?? [];
@@ -51,7 +51,7 @@ const STEPS: WizardStep[] = [
                     update({ platforms: active ? platforms.filter((x) => x !== p) : [...platforms, p] })
                   }
                   className={`px-5 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
-                    active ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-gray-400"
+                    active ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"
                   }`}
                 >
                   {p}
@@ -68,7 +68,7 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Response tone</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Response tone</label>
           <div className="space-y-2">
             {TONES.map((t) => (
               <button
@@ -78,7 +78,7 @@ const STEPS: WizardStep[] = [
                 className={`w-full py-2.5 px-4 rounded-lg border text-sm font-medium text-left transition-colors ${
                   data.tone === t
                     ? "bg-black text-white border-black"
-                    : "border-gray-200 text-gray-600 hover:border-gray-400"
+                    : "border-gray-300 text-gray-800 hover:border-gray-500"
                 }`}
               >
                 {t}
@@ -87,7 +87,7 @@ const STEPS: WizardStep[] = [
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-800 mb-1">
             Alert email for negative reviews
           </label>
           <input
@@ -97,12 +97,12 @@ const STEPS: WizardStep[] = [
             placeholder="you@yourbusiness.com"
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
           />
-          <p className="text-xs text-gray-400 mt-1">You'll get notified instantly for any 1–2 star reviews.</p>
+          <p className="text-xs text-gray-600 mt-1">You'll get notified instantly for any 1–2 star reviews.</p>
         </div>
         <div className="flex items-center justify-between py-3 border border-gray-100 rounded-lg px-4">
           <div>
-            <p className="text-sm font-medium text-gray-700">Auto-respond to all reviews</p>
-            <p className="text-xs text-gray-400">MojuReviews drafts and posts replies automatically</p>
+            <p className="text-sm font-medium text-gray-800">Auto-respond to all reviews</p>
+            <p className="text-xs text-gray-600">MojuReviews drafts and posts replies automatically</p>
           </div>
           <button
             type="button"
@@ -120,7 +120,7 @@ const STEPS: WizardStep[] = [
     render: (data, update) => (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Request message</label>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Request message</label>
           <textarea
             value={(data.requestMessage as string) ?? ""}
             onChange={(e) => update({ requestMessage: e.target.value })}
@@ -128,25 +128,32 @@ const STEPS: WizardStep[] = [
             placeholder="Hi [Name], thanks for visiting us! If you enjoyed your experience, we'd love a quick review — it really helps our small business. [Google Link]"
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"
           />
-          <p className="text-xs text-gray-400 mt-1">Use [Name] and [Google Link] as placeholders.</p>
+          <p className="text-xs text-gray-600 mt-1">Use [Name] and [Google Link] as placeholders.</p>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Send request after...</label>
+          <label className="block text-sm font-medium text-gray-800 mb-2">Send request after... (select all that apply)</label>
           <div className="space-y-2">
-            {TRIGGERS.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => update({ requestTrigger: t })}
-                className={`w-full py-2.5 px-4 rounded-lg border text-sm font-medium text-left transition-colors ${
-                  data.requestTrigger === t
-                    ? "bg-black text-white border-black"
-                    : "border-gray-200 text-gray-600 hover:border-gray-400"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
+            {TRIGGERS.map((t) => {
+              const selected = ((data.requestTriggers as string[]) ?? []).includes(t);
+              return (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => {
+                    const current = (data.requestTriggers as string[]) ?? [];
+                    update({ requestTriggers: selected ? current.filter((x) => x !== t) : [...current, t] });
+                  }}
+                  className={`w-full flex items-center gap-3 py-2.5 px-4 rounded-lg border text-sm font-medium text-left transition-colors ${
+                    selected ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"
+                  }`}
+                >
+                  <span className={`w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center ${selected ? "bg-white border-white" : "border-gray-400"}`}>
+                    {selected && <span className="text-black text-xs">✓</span>}
+                  </span>
+                  {t}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -156,7 +163,7 @@ const STEPS: WizardStep[] = [
     title: "Connect Google",
     render: (data, update) => (
       <div className="space-y-5">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-700">
           Connect your Google Business Profile so MojuReviews can read and respond to reviews on your behalf.
         </p>
         <button
@@ -218,30 +225,30 @@ export default function MojuReviewsPage() {
             <h2 className="text-base font-semibold text-gray-900 mb-4">Configuration</h2>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-gray-400 block mb-0.5">Business</span>
+                <span className="text-gray-500 block mb-0.5">Business</span>
                 <span className="text-gray-900 font-medium">{config.businessName as string ?? "—"}</span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Platforms</span>
+                <span className="text-gray-500 block mb-0.5">Platforms</span>
                 <span className="text-gray-900 font-medium">
                   {((config.platforms as string[]) ?? []).join(", ") || "—"}
                 </span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Tone</span>
+                <span className="text-gray-500 block mb-0.5">Tone</span>
                 <span className="text-gray-900 font-medium">{config.tone as string ?? "—"}</span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Auto-respond</span>
+                <span className="text-gray-500 block mb-0.5">Auto-respond</span>
                 <span className="text-gray-900 font-medium">{config.autoRespond ? "On" : "Off"}</span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Alert email</span>
+                <span className="text-gray-500 block mb-0.5">Alert email</span>
                 <span className="text-gray-900 font-medium">{config.alertEmail as string ?? "—"}</span>
               </div>
               <div>
-                <span className="text-gray-400 block mb-0.5">Review request trigger</span>
-                <span className="text-gray-900 font-medium">{config.requestTrigger as string ?? "—"}</span>
+                <span className="text-gray-500 block mb-0.5">Review request triggers</span>
+                <span className="text-gray-900 font-medium">{((config.requestTriggers as string[]) ?? []).join(", ") || "—"}</span>
               </div>
             </div>
           </div>
