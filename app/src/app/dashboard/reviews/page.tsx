@@ -183,6 +183,7 @@ const STEPS: WizardStep[] = [
         ) : (
           <a
             href="/api/auth/google"
+            onClick={() => sessionStorage.setItem("reviewsWizardData", JSON.stringify(data))}
             className="w-full flex items-center justify-center gap-3 py-3 px-5 rounded-lg border border-gray-300 text-sm font-medium text-gray-800 hover:border-gray-500 transition-colors"
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none">
@@ -214,6 +215,15 @@ export default function MojuReviewsPage() {
     typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("connected") === "true"
   );
+  // Restore wizard data saved before OAuth redirect
+  const [savedWizardData] = useState<Record<string, unknown>>(() => {
+    if (typeof window === "undefined") return {};
+    try {
+      const raw = sessionStorage.getItem("reviewsWizardData");
+      if (raw) { sessionStorage.removeItem("reviewsWizardData"); return JSON.parse(raw) as Record<string, unknown>; }
+    } catch {}
+    return {};
+  });
 
   // Save googleConnected to config once config is loaded
   useEffect(() => {
@@ -292,6 +302,7 @@ export default function MojuReviewsPage() {
           onComplete={save}
           initialData={{
             ...(reconfiguring && config ? (config as Record<string, unknown>) : {}),
+            ...savedWizardData,
             ...(googleConnected ? { googleConnected: true } : {}),
           }}
           initialStep={oauthReturned ? STEPS.length - 1 : 0}
