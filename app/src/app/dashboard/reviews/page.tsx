@@ -205,13 +205,17 @@ const STEPS: WizardStep[] = [
 export default function MojuReviewsPage() {
   const { config, loaded, reconfiguring, setReconfiguring, save, clear } = useBotConfig("reviews");
   const [googleConnected, setGoogleConnected] = useState(false);
+  const [oauthReturned, setOauthReturned] = useState(false);
 
   // Handle OAuth callback — ?connected=true means Google auth succeeded
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("connected") === "true" && config && !config.googleConnected) {
-      save({ ...config, googleConnected: true });
+    if (params.get("connected") === "true") {
       setGoogleConnected(true);
+      setOauthReturned(true);
+      if (config && !config.googleConnected) {
+        save({ ...config, googleConnected: true });
+      }
     }
     if (config?.googleConnected) setGoogleConnected(true);
   }, [config]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -283,7 +287,11 @@ export default function MojuReviewsPage() {
         <OnboardingWizard
           steps={STEPS}
           onComplete={save}
-          initialData={reconfiguring && config ? (config as Record<string, unknown>) : {}}
+          initialData={{
+            ...(reconfiguring && config ? (config as Record<string, unknown>) : {}),
+            ...(googleConnected ? { googleConnected: true } : {}),
+          }}
+          initialStep={oauthReturned ? STEPS.length - 1 : 0}
         />
       )}
     </div>

@@ -14,10 +14,11 @@ interface Props {
   steps: WizardStep[];
   onComplete: (data: Record<string, unknown>) => void | Promise<void>;
   initialData?: Record<string, unknown>;
+  initialStep?: number;
 }
 
-export default function OnboardingWizard({ steps, onComplete, initialData = {} }: Props) {
-  const [step, setStep] = useState(0);
+export default function OnboardingWizard({ steps, onComplete, initialData = {}, initialStep = 0 }: Props) {
+  const [step, setStep] = useState(initialStep);
   const [data, setData] = useState<Record<string, unknown>>(initialData);
   const [finishing, setFinishing] = useState(false);
 
