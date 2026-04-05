@@ -23,19 +23,19 @@ export default function HomePage() {
   return (
     <main className="min-h-screen" style={{ background: "linear-gradient(135deg, #0d0d1a 0%, #1a0a2e 50%, #0d0d1a 100%)" }}>
       {/* Nav */}
-      <nav className="px-8 py-5 flex items-center justify-between">
-        <span className="text-xl font-bold text-white">
+      <nav className="px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
+        <Link href="/" className="text-xl font-bold text-white shrink-0">
           <span style={{ background: "linear-gradient(90deg, #a855f7, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Moju</span>
           <span className="text-white">Crew</span>
-        </span>
-        <div className="flex items-center gap-6">
-          <Link href="/pricing" className="text-sm text-gray-300 hover:text-white transition-colors">Pricing</Link>
+        </Link>
+        <div className="flex items-center gap-3 sm:gap-6">
+          <Link href="/pricing" className="text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Pricing</Link>
           {isSignedIn ? (
             <Link href="/dashboard" className="text-sm text-white border border-white/20 px-4 py-2 rounded-full hover:bg-white/10 transition-colors">Dashboard</Link>
           ) : (
             <>
               <Link href="/sign-in" className="text-sm text-gray-300 hover:text-white transition-colors">Sign in</Link>
-              <Link href="/sign-up" className="text-sm text-white px-5 py-2 rounded-full font-medium transition-all hover:opacity-90" style={{ background: "linear-gradient(90deg, #a855f7, #ec4899)" }}>Get started</Link>
+              <Link href="/sign-up" className="text-sm text-white px-4 py-2 rounded-full font-medium transition-all hover:opacity-90 whitespace-nowrap" style={{ background: "linear-gradient(90deg, #a855f7, #ec4899)" }}>Get started</Link>
             </>
           )}
         </div>
@@ -43,7 +43,7 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="px-6 pt-24 pb-32 text-center max-w-4xl mx-auto">
-        <h1 className="text-6xl font-bold text-white mb-6 leading-tight">
+        <h1 className="text-4xl sm:text-6xl font-bold text-white mb-6 leading-tight">
           Your{" "}
           <span style={{ background: "linear-gradient(90deg, #a855f7, #f97316)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI Crew,</span>
           <br />Ready to Work.
