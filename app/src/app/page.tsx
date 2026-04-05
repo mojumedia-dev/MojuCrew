@@ -88,7 +88,9 @@ export default function HomePage() {
       {/* Pricing teaser */}
       <section className="px-6 py-20 text-center">
         <h2 className="text-3xl font-bold text-white mb-4">Simple pricing</h2>
-        <p className="text-gray-400 mb-8">Start with one bot at $79/mo. Scale to all 11 for $599/mo. Agency white-label at $999/mo.</p>
+        <p className="text-gray-400 mb-8 max-w-lg mx-auto">
+          Start with one bot at $79/mo. Scale to all 11 for $599/mo.<br className="hidden sm:block" /> Agency white-label at $999/mo.
+        </p>
         <Link
           href="/pricing"
           className="inline-block text-white px-8 py-3 rounded-full text-base font-medium border border-white/20 hover:bg-white/10 transition-colors"

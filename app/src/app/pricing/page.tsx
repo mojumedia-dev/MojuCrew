@@ -43,11 +43,11 @@ export default function PricingPage() {
         <Link href="/sign-in" className="text-sm text-gray-400 hover:text-white">Sign in</Link>
       </nav>
 
-      <section className="px-6 py-20 text-center max-w-6xl mx-auto">
+      <section className="px-6 py-20 text-center max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-white mb-4">Simple, transparent pricing</h1>
         <p className="text-gray-400 text-lg mb-16">Hire one crew member or your full team. Cancel anytime.</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PLANS.map((plan) => (
             <div
               key={plan.name}
