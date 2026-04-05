@@ -204,18 +204,21 @@ const STEPS: WizardStep[] = [
 
 export default function MojuReviewsPage() {
   const { config, loaded, reconfiguring, setReconfiguring, save, clear } = useBotConfig("reviews");
-  const [googleConnected, setGoogleConnected] = useState(false);
-  const [oauthReturned, setOauthReturned] = useState(false);
 
-  // Handle OAuth callback — ?connected=true means Google auth succeeded
+  // Read synchronously so initialStep is correct on first render
+  const [oauthReturned] = useState(() =>
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("connected") === "true"
+  );
+  const [googleConnected, setGoogleConnected] = useState(() =>
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("connected") === "true"
+  );
+
+  // Save googleConnected to config once config is loaded
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("connected") === "true") {
-      setGoogleConnected(true);
-      setOauthReturned(true);
-      if (config && !config.googleConnected) {
-        save({ ...config, googleConnected: true });
-      }
+    if (oauthReturned && config && !config.googleConnected) {
+      save({ ...config, googleConnected: true });
     }
     if (config?.googleConnected) setGoogleConnected(true);
   }, [config]); // eslint-disable-line react-hooks/exhaustive-deps
