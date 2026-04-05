@@ -12,11 +12,7 @@ export async function GET() {
     client_id: process.env.GOOGLE_CLIENT_ID!,
     redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/google/callback`,
     response_type: "code",
-    scope: [
-      "https://www.googleapis.com/auth/business.manage",
-      "openid",
-      "email",
-    ].join(" "),
+    scope: ["openid", "email"].join(" "),
     access_type: "offline",
     prompt: "consent",
     state: user.id, // pass userId through OAuth flow
