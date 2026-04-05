@@ -72,7 +72,7 @@ export default function HomePage() {
       <section className="px-6 py-20" style={{ background: "rgba(255,255,255,0.03)" }}>
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-white mb-4">Meet your crew</h2>
-          <p className="text-center text-gray-400 mb-12">Five AI workers. One dashboard. Zero overhead.</p>
+          <p className="text-center text-gray-400 mb-12">11 AI workers. One dashboard. Zero overhead.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {BOTS.map((bot) => (
               <div key={bot.name} className="rounded-xl p-6 border border-white/10 hover:border-purple-500/40 transition-colors" style={{ background: "rgba(255,255,255,0.05)" }}>
