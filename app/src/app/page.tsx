@@ -53,11 +53,11 @@ export default function HomePage() {
         </p>
         <div className="flex items-center justify-center gap-4">
           <Link
-            href="/sign-up"
+            href={isSignedIn ? "/dashboard" : "/sign-up"}
             className="text-white px-8 py-3 rounded-full text-base font-medium transition-all hover:opacity-90 hover:scale-105"
             style={{ background: "linear-gradient(90deg, #a855f7, #ec4899)" }}
           >
-            Hire your crew
+            {isSignedIn ? "Go to dashboard" : "Hire your crew"}
           </Link>
           <Link
             href="/pricing"
