@@ -18,7 +18,7 @@ export async function GET() {
     state: user.id, // pass userId through OAuth flow
   });
 
-  return NextResponse.redirect(
-    `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
-  );
+  const url = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  // Debug: return the URL instead of redirecting so we can inspect it
+  return NextResponse.json({ url, clientId: process.env.GOOGLE_CLIENT_ID?.slice(0, 20) + "...", redirectUri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/google/callback` });
 }
