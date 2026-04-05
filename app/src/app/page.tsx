@@ -85,18 +85,47 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pricing teaser */}
-      <section className="px-6 py-20 text-center">
-        <h2 className="text-3xl font-bold text-white mb-4">Simple pricing</h2>
-        <p className="text-gray-400 mb-8 max-w-lg mx-auto">
-          Start with one bot at $79/mo. Scale to all 11 for $599/mo.<br className="hidden sm:block" /> Agency white-label at $999/mo.
-        </p>
-        <Link
-          href="/pricing"
-          className="inline-block text-white px-8 py-3 rounded-full text-base font-medium border border-white/20 hover:bg-white/10 transition-colors"
-        >
-          View all plans
-        </Link>
+      {/* Pricing */}
+      <section className="px-6 py-20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-white mb-4">Simple pricing</h2>
+          <p className="text-center text-gray-400 mb-12">Hire one crew member or your full team. Cancel anytime.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { name: "Solo", price: 79, bots: 1, desc: "Start with one AI worker of your choice." },
+              { name: "Pro", price: 299, bots: 5, desc: "Build a capable crew with 5 AI workers.", highlight: true },
+              { name: "Enterprise", price: 599, bots: 11, desc: "All 11 bots, fully deployed." },
+              { name: "Agency", price: 999, bots: 11, desc: "White-label for your clients.", agency: true },
+            ].map((plan) => (
+              <div
+                key={plan.name}
+                className="rounded-xl p-6 border text-left"
+                style={{
+                  background: plan.highlight ? "rgba(168,85,247,0.12)" : "rgba(255,255,255,0.04)",
+                  borderColor: plan.highlight ? "rgba(168,85,247,0.5)" : "rgba(255,255,255,0.08)",
+                }}
+              >
+                {plan.highlight && (
+                  <div className="text-xs font-bold text-white px-3 py-1 rounded-full inline-block mb-3" style={{ background: "linear-gradient(90deg,#a855f7,#ec4899)" }}>Most popular</div>
+                )}
+                <h3 className="text-lg font-bold text-white mb-1">{plan.name}</h3>
+                <p className="text-gray-400 text-xs mb-3">{plan.desc}</p>
+                <div className="text-3xl font-bold text-white mb-1">${plan.price}<span className="text-sm font-normal text-gray-400">/mo</span></div>
+                <p className="text-xs text-gray-500 mb-5">{plan.bots} AI bot{plan.bots > 1 ? "s" : ""}</p>
+                <Link
+                  href={isSignedIn ? "/dashboard" : "/sign-up"}
+                  className="block text-center py-2 rounded-full text-sm font-semibold transition-all hover:opacity-90"
+                  style={plan.highlight
+                    ? { background: "linear-gradient(90deg,#a855f7,#ec4899)", color: "#fff" }
+                    : { border: "1px solid rgba(255,255,255,0.2)", color: "#fff" }
+                  }
+                >
+                  {isSignedIn ? "Go to dashboard" : "Get started"}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
     </main>
   );
