@@ -15,15 +15,47 @@ interface Props {
   onComplete: (data: Record<string, unknown>) => void | Promise<void>;
   initialData?: Record<string, unknown>;
   initialStep?: number;
+  storageKey?: string; // if set, auto-saves progress to localStorage
 }
 
-export default function OnboardingWizard({ steps, onComplete, initialData = {}, initialStep = 0 }: Props) {
-  const [step, setStep] = useState(initialStep);
-  const [data, setData] = useState<Record<string, unknown>>(initialData);
+export default function OnboardingWizard({ steps, onComplete, initialData = {}, initialStep = 0, storageKey }: Props) {
+  const [step, setStep] = useState(() => {
+    if (storageKey && typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem(`${storageKey}_step`);
+        if (saved !== null) return Math.min(parseInt(saved, 10), steps.length - 1);
+      } catch {}
+    }
+    return initialStep;
+  });
+
+  const [data, setData] = useState<Record<string, unknown>>(() => {
+    if (storageKey && typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem(`${storageKey}_data`);
+        if (saved) return { ...initialData, ...(JSON.parse(saved) as Record<string, unknown>) };
+      } catch {}
+    }
+    return initialData;
+  });
+
   const [finishing, setFinishing] = useState(false);
 
   const update = (patch: Record<string, unknown>) =>
-    setData((d) => ({ ...d, ...patch }));
+    setData((d) => {
+      const next = { ...d, ...patch };
+      if (storageKey) {
+        try { localStorage.setItem(`${storageKey}_data`, JSON.stringify(next)); } catch {}
+      }
+      return next;
+    });
+
+  const goToStep = (s: number) => {
+    setStep(s);
+    if (storageKey) {
+      try { localStorage.setItem(`${storageKey}_step`, String(s)); } catch {}
+    }
+  };
 
   const isLast = step === steps.length - 1;
 
@@ -31,6 +63,13 @@ export default function OnboardingWizard({ steps, onComplete, initialData = {}, 
     setFinishing(true);
     try {
       await onComplete(data);
+      // Clear saved draft on successful completion
+      if (storageKey) {
+        try {
+          localStorage.removeItem(`${storageKey}_data`);
+          localStorage.removeItem(`${storageKey}_step`);
+        } catch {}
+      }
     } finally {
       setFinishing(false);
     }
@@ -71,7 +110,7 @@ export default function OnboardingWizard({ steps, onComplete, initialData = {}, 
       <div className="flex justify-between">
         <button
           type="button"
-          onClick={() => setStep((s) => s - 1)}
+          onClick={() => goToStep(step - 1)}
           disabled={step === 0}
           className="px-5 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg disabled:opacity-30 hover:bg-gray-50 transition-colors"
         >
@@ -79,7 +118,7 @@ export default function OnboardingWizard({ steps, onComplete, initialData = {}, 
         </button>
         <button
           type="button"
-          onClick={() => (isLast ? handleFinish() : setStep((s) => s + 1))}
+          onClick={() => (isLast ? handleFinish() : goToStep(step + 1))}
           disabled={finishing}
           className="px-5 py-2 text-sm font-semibold bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-60 min-w-[120px] flex items-center justify-center gap-2"
         >

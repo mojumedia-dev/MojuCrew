@@ -306,6 +306,7 @@ export default function MojuReviewsPage() {
             ...(googleConnected ? { googleConnected: true } : {}),
           }}
           initialStep={oauthReturned ? STEPS.length - 1 : 0}
+          storageKey={reconfiguring ? undefined : "wizard_reviews"}
         />
       )}
     </div>
