@@ -31,7 +31,7 @@ function PlatformFields({ platform, data, update }: {
     <div>
       <label className="block text-sm font-medium text-gray-800 mb-1">{label}</label>
       <input type={type} value={(data[field] as string) ?? ""} onChange={(e) => update({ [field]: e.target.value })}
-        placeholder={placeholder} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
+        placeholder={placeholder} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900 placeholder:text-gray-400" />
       {hint && <p className="text-xs text-gray-500 mt-1">{hint}</p>}
     </div>
   );
@@ -103,8 +103,8 @@ const STEPS: WizardStep[] = [
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Industry</label>
-          <select value={(data.industry as string) ?? ""} onChange={(e) => update({ industry: e.target.value })} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black bg-white text-gray-900">
-            <option value="">Select an industry...</option>
+          <select value={(data.industry as string) ?? ""} onChange={(e) => update({ industry: e.target.value })} className={`w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black bg-white ${(data.industry as string) ? "text-gray-900" : "text-gray-400"}`}>
+            <option value="" disabled>Select an industry...</option>
             {INDUSTRIES.map((i) => <option key={i} value={i}>{i}</option>)}
           </select>
         </div>
@@ -146,7 +146,7 @@ const STEPS: WizardStep[] = [
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">Opening greeting</label>
-          <textarea value={(data.greeting as string) ?? ""} onChange={(e) => update({ greeting: e.target.value })} rows={3} placeholder={`Hi! I'm the assistant for ${(data.businessName as string) ?? "us"}. How can I help you today?`} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none text-gray-900" />
+          <textarea value={(data.greeting as string) ?? ""} onChange={(e) => update({ greeting: e.target.value })} rows={3} placeholder={`Hi! I'm the assistant for ${(data.businessName as string) ?? "us"}. How can I help you today?`} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none text-gray-900 placeholder:text-gray-400" />
         </div>
         <div className="flex items-center justify-between py-3 px-4 border border-gray-100 rounded-lg">
           <div>
