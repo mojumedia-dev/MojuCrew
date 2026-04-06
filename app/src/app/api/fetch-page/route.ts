@@ -111,9 +111,9 @@ function extractText(html: string): string {
 
   text = lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
 
-  // Cap at 8000 chars
-  if (text.length > 8000) {
-    text = text.slice(0, 8000) + "\n\n[Content truncated — add more URLs or paste extra sections manually]";
+  // Cap at 20,000 chars per URL fetch
+  if (text.length > 20000) {
+    text = text.slice(0, 20000) + "\n\n[Content truncated — add more URLs or paste extra sections manually]";
   }
 
   return text;
