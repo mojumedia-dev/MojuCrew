@@ -3,6 +3,7 @@
 import { useState } from "react";
 import OnboardingWizard, { WizardStep } from "@/components/OnboardingWizard";
 import { useBotConfig } from "@/hooks/useBotConfig";
+import KnowledgeBaseStep from "@/components/KnowledgeBaseStep";
 
 const INDUSTRIES = [
   "Health & Wellness", "Beauty & Salon", "Fitness / Gym",
@@ -118,19 +119,7 @@ const STEPS: WizardStep[] = [
   },
   {
     title: "Knowledge base",
-    render: (data, update) => (
-      <div className="space-y-4">
-        <p className="text-sm text-gray-600">Paste content from your website — services, about page, pricing, FAQs, hours. The more context you give, the better the bot answers.</p>
-        <textarea
-          value={(data.knowledgeBase as string) ?? ""}
-          onChange={(e) => update({ knowledgeBase: e.target.value })}
-          rows={10}
-          placeholder={"Example:\n\nWe offer red light therapy, infrared sauna, and hydration IV treatments.\n\nRed light therapy sessions are 20 minutes and cost $45.\n\nWe're open Mon–Sat 9am–7pm, Sunday 10am–4pm.\n\nLocated at 123 Main St, Suite 200."}
-          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none text-gray-900"
-        />
-        <p className="text-xs text-gray-500">You can also add instructions like "Always recommend booking a consultation first."</p>
-      </div>
-    ),
+    render: (data, update) => <KnowledgeBaseStep data={data} update={update} />,
   },
   {
     title: "Chat personality",
