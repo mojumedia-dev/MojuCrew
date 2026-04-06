@@ -26,6 +26,21 @@ const JUNK_PATTERNS = [
   /^(home|about|contact|blog|shop|cart|menu|search)$/i,
   /^\s*[\|\/•\-–—]\s*$/,
   /^\s*\d+\s*$/, // lone numbers
+  // Shopify / e-commerce UI
+  /^regular\s+price/i,
+  /^sale\s+price/i,
+  /^unit\s+price/i,
+  /^sold\s+out/i,
+  /^add\s+to\s+cart/i,
+  /^add\s+to\s+bag/i,
+  /^out\s+of\s+stock/i,
+  /^choosing\s+a\s+selection/i,
+  /^opens\s+in\s+a\s+new/i,
+  /^quantity/i,
+  /^(view|check\s+out|continue\s+shopping)$/i,
+  /^item\s+added\s+to/i,
+  /^view\s+cart$/i,
+  /^×$|^&times;$/,
 ];
 
 function isJunkLine(line: string): boolean {
@@ -49,6 +64,9 @@ function extractText(html: string): string {
     .replace(/<footer[\s\S]*?<\/footer>/gi, "")
     .replace(/<aside[\s\S]*?<\/aside>/gi, "")
     .replace(/<form[\s\S]*?<\/form>/gi, "")
+    // Shopify-specific: product card price blocks
+    .replace(/<[^>]*class="[^"]*price[^"]*"[\s\S]*?<\/[^>]+>/gi, "")
+    .replace(/<[^>]*class="[^"]*product-card[^"]*"[\s\S]*?<\/[^>]+>/gi, "")
     .replace(/<!--[\s\S]*?-->/g, "");
 
   // Convert block elements to newlines
