@@ -6,6 +6,8 @@ const isPublicRoute = createRouteMatcher([
   '/sign-up(.*)',
   '/pricing',
   '/api/webhooks(.*)',
+  '/api/widget(.*)',  // public widget script
+  '/api/chat(.*)',    // public chat endpoint (auth handled by bot key)
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
