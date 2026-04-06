@@ -84,6 +84,41 @@ const STEPS: WizardStep[] = [
     ),
   },
   {
+    title: "Platform integration",
+    render: (data, update) => {
+      const platform = (data.platform as string) ?? "";
+      return (
+        <div className="space-y-5">
+          <p className="text-sm text-gray-600">Connect your platform so captured leads are automatically added as customers. Skip this step if you don't need lead sync.</p>
+          <div className="space-y-2">
+            {[
+              { id: "shopify", label: "Shopify" },
+              { id: "none", label: "Skip — no lead sync" },
+            ].map((p) => (
+              <button key={p.id} type="button" onClick={() => update({ platform: p.id })} className={`w-full flex items-center gap-3 py-3 px-4 rounded-lg border text-sm font-medium text-left transition-colors ${platform === p.id ? "bg-black text-white border-black" : "border-gray-300 text-gray-800 hover:border-gray-500"}`}>
+                {p.label}
+              </button>
+            ))}
+          </div>
+
+          {platform === "shopify" && (
+            <div className="space-y-4 border border-gray-100 rounded-xl p-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-800 mb-1">Shopify store URL</label>
+                <input type="text" value={(data.shopifyStoreUrl as string) ?? ""} onChange={(e) => update({ shopifyStoreUrl: e.target.value })} placeholder="your-store.myshopify.com" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-800 mb-1">Admin API access token</label>
+                <input type="password" value={(data.shopifyApiToken as string) ?? ""} onChange={(e) => update({ shopifyApiToken: e.target.value })} placeholder="shpat_..." className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900" />
+                <p className="text-xs text-gray-500 mt-1">Shopify Admin → Apps → Develop apps → create app with <strong>write_customers</strong> scope → Install → copy Admin API access token.</p>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    },
+  },
+  {
     title: "You're ready",
     render: (data) => (
       <div className="space-y-5">
@@ -103,6 +138,10 @@ const STEPS: WizardStep[] = [
           <div className="flex items-center justify-between">
             <span className="text-gray-500">Lead capture</span>
             <span className="font-medium text-gray-900">{data.captureLeads ? "On" : "Off"}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500">Lead sync</span>
+            <span className="font-medium text-gray-900 capitalize">{(data.platform as string) === "shopify" ? "Shopify" : "Off"}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-gray-500">Knowledge base</span>
@@ -153,6 +192,7 @@ export default function MojuChatPage() {
               <div><span className="text-gray-500 block mb-0.5">Industry</span><span className="text-gray-900 font-medium">{config.industry as string ?? "—"}</span></div>
               <div><span className="text-gray-500 block mb-0.5">Tone</span><span className="text-gray-900 font-medium">{config.tone as string ?? "—"}</span></div>
               <div><span className="text-gray-500 block mb-0.5">Lead capture</span><span className="text-gray-900 font-medium">{config.captureLeads ? "On" : "Off"}</span></div>
+              <div><span className="text-gray-500 block mb-0.5">Lead sync</span><span className="text-gray-900 font-medium capitalize">{(config.platform as string) === "shopify" ? "Shopify" : "—"}</span></div>
               <div><span className="text-gray-500 block mb-0.5">Knowledge base</span><span className="text-gray-900 font-medium">{(config.knowledgeBase as string)?.length ? `${(config.knowledgeBase as string).length} chars` : "—"}</span></div>
             </div>
           </div>

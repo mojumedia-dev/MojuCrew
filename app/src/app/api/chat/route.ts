@@ -11,6 +11,43 @@ interface LeadInfo {
   email: string;
 }
 
+async function syncLead(config: Record<string, unknown>, name: string, email: string): Promise<void> {
+  const platform = config.platform as string;
+
+  if (platform === "shopify") {
+    const storeUrl = (config.shopifyStoreUrl as string)?.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    const token = config.shopifyApiToken as string;
+    if (!storeUrl || !token) return;
+
+    const [firstName, ...rest] = name.trim().split(" ");
+    const lastName = rest.join(" ");
+
+    try {
+      await fetch(`https://${storeUrl}/admin/api/2024-01/customers.json`, {
+        method: "POST",
+        headers: {
+          "X-Shopify-Access-Token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customer: {
+            first_name: firstName,
+            last_name: lastName || "",
+            email,
+            tags: "MojuChat",
+            marketing_opt_in_level: "single_opt_in",
+          },
+        }),
+      });
+    } catch (e) {
+      console.error("Shopify lead sync error:", e);
+    }
+    return;
+  }
+
+  // Future platforms: HubSpot, Mailchimp, GHL, etc.
+}
+
 function buildSystemPrompt(config: Record<string, unknown>): string {
   const bizName = (config.businessName as string) ?? "this business";
   const industry = (config.industry as string) ?? "";
@@ -97,18 +134,9 @@ export async function POST(req: NextRequest) {
 
     const config = row.config as Record<string, unknown>;
 
-    // Store lead if provided
+    // Sync lead to the configured platform
     if (leadInfo?.name && leadInfo?.email) {
-      await supabase.from("chat_leads").upsert(
-        {
-          user_id: row.user_id,
-          chat_key: key,
-          name: leadInfo.name,
-          email: leadInfo.email,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id,chat_key,email" }
-      );
+      await syncLead(config, leadInfo.name, leadInfo.email);
     }
 
     const systemPrompt = buildSystemPrompt(config);
