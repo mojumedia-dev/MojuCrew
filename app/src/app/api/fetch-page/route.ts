@@ -1,8 +1,46 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
+// Boilerplate patterns to drop entirely
+const JUNK_PATTERNS = [
+  /^skip\s+to/i,
+  /^cookie/i,
+  /^accept\s+(all\s+)?cookies?/i,
+  /^we use cookies/i,
+  /privacy\s+policy/i,
+  /terms\s+(of\s+)?(service|use)/i,
+  /^©\s*\d{4}/,
+  /^copyright\s+©?/i,
+  /^all rights reserved/i,
+  /^follow\s+us/i,
+  /^subscribe\s+(to\s+our\s+)?newsletter/i,
+  /^sign\s+up\s+for/i,
+  /^(click|tap)\s+here/i,
+  /^read\s+more/i,
+  /^learn\s+more/i,
+  /^view\s+all/i,
+  /^see\s+all/i,
+  /^back\s+to\s+top/i,
+  /^share\s+(this|on)/i,
+  /^(facebook|twitter|instagram|linkedin|youtube|tiktok|pinterest)$/i,
+  /^(home|about|contact|blog|shop|cart|menu|search)$/i,
+  /^\s*[\|\/•\-–—]\s*$/,
+  /^\s*\d+\s*$/, // lone numbers
+];
+
+function isJunkLine(line: string): boolean {
+  const trimmed = line.trim();
+  if (trimmed.length < 3) return true;
+  // Very short lines that look like nav items (under 25 chars, no sentence punctuation)
+  if (trimmed.length < 25 && !/[.?!,:;]/.test(trimmed) && /^[A-Z]/.test(trimmed) && trimmed.split(" ").length <= 3) {
+    // Keep short lines that look like labels (e.g. "Monday–Friday", "$45/session")
+    if (!/[$€£\d–\-@]/.test(trimmed)) return true;
+  }
+  return JUNK_PATTERNS.some((p) => p.test(trimmed));
+}
+
 function extractText(html: string): string {
-  // Remove script, style, nav, header, footer, aside blocks entirely
+  // Remove entire noisy blocks
   let text = html
     .replace(/<script[\s\S]*?<\/script>/gi, "")
     .replace(/<style[\s\S]*?<\/style>/gi, "")
@@ -10,17 +48,18 @@ function extractText(html: string): string {
     .replace(/<header[\s\S]*?<\/header>/gi, "")
     .replace(/<footer[\s\S]*?<\/footer>/gi, "")
     .replace(/<aside[\s\S]*?<\/aside>/gi, "")
+    .replace(/<form[\s\S]*?<\/form>/gi, "")
     .replace(/<!--[\s\S]*?-->/g, "");
 
   // Convert block elements to newlines
   text = text
-    .replace(/<\/?(p|div|section|article|h[1-6]|li|br|tr)[^>]*>/gi, "\n")
-    .replace(/<\/?(ul|ol|table)[^>]*>/gi, "\n");
+    .replace(/<\/?(p|div|section|article|h[1-6]|li|br|tr|td|th)[^>]*>/gi, "\n")
+    .replace(/<\/?(ul|ol|table|tbody|thead)[^>]*>/gi, "\n");
 
   // Strip remaining tags
   text = text.replace(/<[^>]+>/g, "");
 
-  // Decode common HTML entities
+  // Decode HTML entities
   text = text
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
@@ -29,18 +68,34 @@ function extractText(html: string): string {
     .replace(/&#39;/g, "'")
     .replace(/&nbsp;/g, " ")
     .replace(/&mdash;/g, "—")
-    .replace(/&ndash;/g, "–");
+    .replace(/&ndash;/g, "–")
+    .replace(/&#\d+;/g, " ")  // other numeric entities
+    .replace(/&\w+;/g, " ");  // any remaining entities
 
-  // Collapse whitespace
-  text = text
-    .replace(/\t/g, " ")
-    .replace(/[ ]{2,}/g, " ")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+  // Strip non-printable / weird unicode characters
+  // eslint-disable-next-line no-control-regex
+  text = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "");
 
-  // Cap at 8000 chars to keep knowledge base manageable
+  // Collapse inline whitespace
+  text = text.replace(/\t/g, " ").replace(/[ ]{2,}/g, " ");
+
+  // Split into lines, filter junk, deduplicate
+  const seen = new Set<string>();
+  const lines = text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => {
+      if (!l || isJunkLine(l)) return false;
+      if (seen.has(l.toLowerCase())) return false;
+      seen.add(l.toLowerCase());
+      return true;
+    });
+
+  text = lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+
+  // Cap at 8000 chars
   if (text.length > 8000) {
-    text = text.slice(0, 8000) + "\n\n[Content truncated — paste more sections manually if needed]";
+    text = text.slice(0, 8000) + "\n\n[Content truncated — add more URLs or paste extra sections manually]";
   }
 
   return text;
