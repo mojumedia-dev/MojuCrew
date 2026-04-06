@@ -13,39 +13,103 @@ interface LeadInfo {
 
 async function syncLead(config: Record<string, unknown>, name: string, email: string): Promise<void> {
   const platform = config.platform as string;
+  const [firstName, ...rest] = name.trim().split(" ");
+  const lastName = rest.join(" ");
 
-  if (platform === "shopify") {
-    const storeUrl = (config.shopifyStoreUrl as string)?.replace(/^https?:\/\//, "").replace(/\/$/, "");
-    const token = config.shopifyApiToken as string;
-    if (!storeUrl || !token) return;
-
-    const [firstName, ...rest] = name.trim().split(" ");
-    const lastName = rest.join(" ");
-
-    try {
+  try {
+    if (platform === "shopify") {
+      const storeUrl = (config.shopifyStoreUrl as string)?.replace(/^https?:\/\//, "").replace(/\/$/, "");
+      const token = config.shopifyApiToken as string;
+      if (!storeUrl || !token) return;
       await fetch(`https://${storeUrl}/admin/api/2024-01/customers.json`, {
         method: "POST",
+        headers: { "X-Shopify-Access-Token": token, "Content-Type": "application/json" },
+        body: JSON.stringify({ customer: { first_name: firstName, last_name: lastName || "", email, tags: "MojuChat" } }),
+      });
+
+    } else if (platform === "hubspot") {
+      const token = config.hubspotToken as string;
+      if (!token) return;
+      await fetch("https://api.hubspot.com/crm/v3/objects/contacts", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ properties: { firstname: firstName, lastname: lastName || "", email } }),
+      });
+
+    } else if (platform === "ghl") {
+      const apiKey = config.ghlApiKey as string;
+      const locationId = config.ghlLocationId as string;
+      if (!apiKey || !locationId) return;
+      await fetch("https://services.leadconnectorhq.com/contacts/", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${apiKey}`, "Version": "2021-07-28", "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName: lastName || "", email, locationId }),
+      });
+
+    } else if (platform === "mailchimp") {
+      const apiKey = config.mailchimpApiKey as string;
+      const listId = config.mailchimpListId as string;
+      if (!apiKey || !listId) return;
+      const dc = apiKey.split("-").pop() ?? "us1";
+      await fetch(`https://${dc}.api.mailchimp.com/3.0/lists/${listId}/members`, {
+        method: "POST",
         headers: {
-          "X-Shopify-Access-Token": token,
+          "Authorization": `Basic ${Buffer.from(`anystring:${apiKey}`).toString("base64")}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          customer: {
-            first_name: firstName,
-            last_name: lastName || "",
-            email,
-            tags: "MojuChat",
-            marketing_opt_in_level: "single_opt_in",
+          email_address: email,
+          status: "subscribed",
+          merge_fields: { FNAME: firstName, LNAME: lastName || "" },
+        }),
+      });
+
+    } else if (platform === "woocommerce") {
+      const storeUrl = (config.wooStoreUrl as string)?.replace(/\/$/, "");
+      const ck = config.wooConsumerKey as string;
+      const cs = config.wooConsumerSecret as string;
+      if (!storeUrl || !ck || !cs) return;
+      await fetch(`${storeUrl}/wp-json/wc/v3/customers`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Basic ${Buffer.from(`${ck}:${cs}`).toString("base64")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, first_name: firstName, last_name: lastName || "" }),
+      });
+
+    } else if (platform === "activecampaign") {
+      const account = config.acAccountName as string;
+      const token = config.acApiToken as string;
+      if (!account || !token) return;
+      await fetch(`https://${account}.api-us1.com/api/3/contacts`, {
+        method: "POST",
+        headers: { "Api-Token": token, "Content-Type": "application/json" },
+        body: JSON.stringify({ contact: { firstName, lastName: lastName || "", email } }),
+      });
+
+    } else if (platform === "wix") {
+      const apiKey = config.wixApiKey as string;
+      const siteId = config.wixSiteId as string;
+      if (!apiKey || !siteId) return;
+      await fetch("https://www.wixapis.com/contacts/v4/contacts", {
+        method: "POST",
+        headers: {
+          "Authorization": apiKey,
+          "wix-site-id": siteId,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          info: {
+            name: { first: firstName, last: lastName || "" },
+            emails: [{ tag: "MAIN", email }],
           },
         }),
       });
-    } catch (e) {
-      console.error("Shopify lead sync error:", e);
     }
-    return;
+  } catch (e) {
+    console.error(`Lead sync error [${platform}]:`, e);
   }
-
-  // Future platforms: HubSpot, Mailchimp, GHL, etc.
 }
 
 function buildSystemPrompt(config: Record<string, unknown>): string {
