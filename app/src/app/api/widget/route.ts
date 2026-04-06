@@ -157,13 +157,14 @@ export async function GET(req: NextRequest) {
     .from("bot_configs")
     .select("config")
     .eq("bot_id", "chat")
-    .filter("config->>chatKey", "eq", key)
+    .contains("config", { chatKey: key })
     .maybeSingle();
 
   if (!row) {
-    return new Response("// Invalid key", {
-      status: 404,
-      headers: { "Content-Type": "application/javascript" },
+    // Return a visible error widget so we can debug in browser console
+    return new Response(`console.error('[MojuChat] Widget key not found: ${key}');`, {
+      status: 200, // 200 so script loads but logs error
+      headers: { "Content-Type": "application/javascript", "Cache-Control": "no-cache" },
     });
   }
 

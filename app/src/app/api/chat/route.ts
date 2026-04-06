@@ -186,7 +186,7 @@ export async function POST(req: NextRequest) {
       .from("bot_configs")
       .select("config, user_id")
       .eq("bot_id", "chat")
-      .filter("config->>chatKey", "eq", key)
+      .contains("config", { chatKey: key })
       .maybeSingle();
 
     if (dbErr || !row) {
