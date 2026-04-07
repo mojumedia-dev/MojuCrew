@@ -96,7 +96,7 @@ function generateWidget(
       sendBtn.disabled=false;
     }).catch(function(){
       removeTyping();
-      addMsg('assistant','Sorry, I\'m having trouble connecting. Please try again.');
+      addMsg('assistant','Sorry, unable to connect. Please try again.');
       sendBtn.disabled=false;
     });
   }
@@ -172,7 +172,7 @@ export async function GET(req: NextRequest) {
   const config = row.config as Record<string, unknown>;
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
   const bizName = (config.businessName as string) ?? "Chat";
-  const greeting = (config.greeting as string) || `Hi! I'm the assistant for ${bizName}. How can I help you today?`;
+  const greeting = (config.greeting as string) || `Hi! This is the assistant for ${bizName}. How can I help you today?`;
   const captureLeads = !!(config.captureLeads as boolean);
 
   const js = generateWidget(key, appUrl, bizName, greeting, captureLeads);
