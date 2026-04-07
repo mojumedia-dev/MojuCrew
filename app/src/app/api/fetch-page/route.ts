@@ -135,6 +135,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
   }
 
+  // Block SSRF — reject private/internal hostnames
+  const hostname = parsed.hostname.toLowerCase();
+  const isPrivate =
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname.startsWith("10.") ||
+    hostname.startsWith("192.168.") ||
+    hostname.startsWith("169.254.") || // link-local / cloud metadata
+    /^172\.(1[6-9]|2\d|3[01])\./.test(hostname) ||
+    hostname.endsWith(".local") ||
+    hostname.endsWith(".internal");
+  if (isPrivate) {
+    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
+  }
+
   try {
     const res = await fetch(parsed.toString(), {
       headers: {

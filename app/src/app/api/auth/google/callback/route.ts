@@ -1,3 +1,4 @@
+import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabaseServer";
 
@@ -6,12 +7,21 @@ import { createServerSupabase } from "@/lib/supabaseServer";
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const code = searchParams.get("code");
-  const userId = searchParams.get("state");
+  const stateUserId = searchParams.get("state");
   const error = searchParams.get("error");
+
+  // Rename for clarity — keep original variable name for downstream use
+  const userId = stateUserId;
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL!;
 
   if (error || !code || !userId) {
+    return NextResponse.redirect(`${appUrl}/dashboard/reviews?error=google_auth_failed`);
+  }
+
+  // Verify the state matches the currently authenticated user (CSRF protection)
+  const user = await currentUser();
+  if (!user || user.id !== userId) {
     return NextResponse.redirect(`${appUrl}/dashboard/reviews?error=google_auth_failed`);
   }
 
