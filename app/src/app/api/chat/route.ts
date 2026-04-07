@@ -150,7 +150,8 @@ function buildSystemPrompt(config: Record<string, unknown>): string {
   prompt += `Guidelines:\n`;
   prompt += `- Answer questions about ${bizName} based on the knowledge base above.\n`;
   prompt += `- If you don't know the answer, say so honestly and suggest the user contact ${bizName} directly.\n`;
-  prompt += `- Keep responses concise — 1–3 sentences unless more detail is needed.\n`;
+  prompt += `- Keep responses concise. Use short paragraphs with a blank line between them. Never write a wall of text.\n`;
+  prompt += `- For lists, use short bullet points on separate lines.\n`;
   if (bookingUrl) {
     prompt += `- When someone wants to book or schedule, direct them to ${bookingUrl}.\n`;
   }

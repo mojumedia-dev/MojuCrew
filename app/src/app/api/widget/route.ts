@@ -31,7 +31,7 @@ function generateWidget(
   +'#_mc_close{background:none;border:none;color:rgba(255,255,255,.8);font-size:22px;cursor:pointer;line-height:1;padding:0;flex-shrink:0}'
   +'#_mc_close:hover{color:#fff}'
   +'#_mc_msgs{flex:1;overflow-y:auto;padding:16px;min-height:240px;max-height:300px;display:flex;flex-direction:column;gap:10px;background:#fafafa}'
-  +'.mc_msg{max-width:80%;padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.5;word-wrap:break-word}'
+  +'.mc_msg{max-width:80%;padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.5;word-wrap:break-word;white-space:pre-wrap}'
   +'.mc_bot{background:#fff;color:#1a1a1a;align-self:flex-start;border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.08)}'
   +'.mc_usr{background:${c};color:#fff;align-self:flex-end;border-bottom-right-radius:4px}'
   +'.mc_typing{color:#aaa;font-size:12px;padding:2px 0;align-self:flex-start}'
