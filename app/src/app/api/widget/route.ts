@@ -74,7 +74,14 @@ function generateWidget(
   function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   function linkify(t){
     var escaped=escHtml(t);
+    // Strip markdown bold/italic (**text** and *text*)
+    escaped=escaped.replace(new RegExp('[*][*]([^*]+)[*][*]','g'),'$1');
+    escaped=escaped.replace(new RegExp('[*]([^*]+)[*]','g'),'$1');
+    // Linkify URLs
     escaped=escaped.replace(new RegExp('(https?://[^ \\t\\r\\n<>"]+)','g'),'<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;word-break:break-all">$1</a>');
+    // Linkify phone numbers e.g. (801) 839-4121
+    escaped=escaped.replace(new RegExp('([(]?[0-9]{3}[)]?[-. ][0-9]{3}[-. ][0-9]{4})','g'),'<a href="tel:$1" style="color:inherit;text-decoration:underline">$1</a>');
+    // Convert newlines to <br>
     escaped=escaped.replace(new RegExp('\\n','g'),'<br>');
     return escaped;
   }

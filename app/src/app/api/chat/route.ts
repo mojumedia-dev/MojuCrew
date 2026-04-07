@@ -151,7 +151,9 @@ function buildSystemPrompt(config: Record<string, unknown>): string {
   prompt += `- Answer questions about ${bizName} based on the knowledge base above.\n`;
   prompt += `- If you don't know the answer, say so honestly and suggest the user contact ${bizName} directly.\n`;
   prompt += `- Keep responses concise. Use short paragraphs with a blank line between them. Never write a wall of text.\n`;
-  prompt += `- For lists, use short bullet points on separate lines.\n`;
+  prompt += `- For lists, use short bullet points (- item) on separate lines.\n`;
+  prompt += `- Do NOT use markdown formatting. No asterisks for bold or italic, no backticks, no # headers.\n`;
+  prompt += `- Never construct, guess, or make up URLs. Only share URLs explicitly provided in this prompt.\n`;
   if (bookingUrl) {
     prompt += `- When someone wants to book or schedule, direct them to ${bookingUrl}.\n`;
   }
