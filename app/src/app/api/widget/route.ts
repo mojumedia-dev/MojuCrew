@@ -47,7 +47,7 @@ function generateWidget(
   +'<div id="_mc_panel">'
   +'<div id="_mc_hdr"><span>'+BIZ+'</span><button id="_mc_close">×</button></div>'
   +'<div id="_mc_msgs"></div>'
-  +(CAPTURE?'<div id="_mc_lead"><p>Before we chat, what\'s your name and email?</p><input id="_mc_lname" placeholder="Your name"/><input id="_mc_lemail" type="email" placeholder="your@email.com"/><button id="_mc_lsub">Start chatting</button></div>':'')
+  +(CAPTURE?'<div id="_mc_lead"><p>Please share your name and email to get started.</p><input id="_mc_lname" placeholder="Your name"/><input id="_mc_lemail" type="email" placeholder="your@email.com"/><button id="_mc_lsub">Start chatting</button></div>':'')
   +'<div id="_mc_inp_row"><textarea id="_mc_inp" placeholder="Type a message..." rows="1"></textarea><button id="_mc_send">Send</button></div>'
   +'</div>';
   document.body.appendChild(w);
