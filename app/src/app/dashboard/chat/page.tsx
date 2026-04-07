@@ -137,6 +137,14 @@ const STEPS: WizardStep[] = [
           <label className="block text-sm font-medium text-gray-800 mb-1">Opening greeting</label>
           <textarea value={(data.greeting as string) ?? ""} onChange={(e) => update({ greeting: e.target.value })} rows={3} placeholder={`Hi! I'm the assistant for ${(data.businessName as string) ?? "us"}. How can I help you today?`} className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none text-gray-900 placeholder:text-gray-400" />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-800 mb-1">Brand color</label>
+          <div className="flex items-center gap-3">
+            <input type="color" value={(data.brandColor as string) ?? "#111111"} onChange={(e) => update({ brandColor: e.target.value })} className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5" />
+            <input type="text" value={(data.brandColor as string) ?? "#111111"} onChange={(e) => update({ brandColor: e.target.value })} placeholder="#111111" className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black text-gray-900 placeholder:text-gray-400" />
+          </div>
+          <p className="text-xs text-gray-500 mt-1">Used for the chat button, header, and send button. Match your brand.</p>
+        </div>
         <div className="flex items-center justify-between py-3 px-4 border border-gray-100 rounded-lg">
           <div>
             <p className="text-sm font-medium text-gray-800">Capture leads</p>
