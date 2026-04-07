@@ -74,7 +74,7 @@ function generateWidget(
   function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   function linkify(t){
     var escaped=escHtml(t);
-    escaped=escaped.replace(new RegExp('(https?://[^\\s<>"]+)','g'),'<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;word-break:break-all">$1</a>');
+    escaped=escaped.replace(new RegExp('(https?://[^ \\t\\r\\n<>"]+)','g'),'<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;word-break:break-all">$1</a>');
     escaped=escaped.replace(new RegExp('\\n','g'),'<br>');
     return escaped;
   }
