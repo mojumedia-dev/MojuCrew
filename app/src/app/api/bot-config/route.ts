@@ -63,5 +63,11 @@ export async function DELETE(req: NextRequest) {
     .eq("bot_id", botId);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  // Revoking reviews also removes stored Google OAuth tokens
+  if (botId === "reviews") {
+    await supabase.from("google_tokens").delete().eq("user_id", userId);
+  }
+
   return NextResponse.json({ ok: true });
 }
