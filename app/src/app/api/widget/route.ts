@@ -31,7 +31,7 @@ function generateWidget(
   +'#_mc_close{background:none;border:none;color:rgba(255,255,255,.8);font-size:22px;cursor:pointer;line-height:1;padding:0;flex-shrink:0}'
   +'#_mc_close:hover{color:#fff}'
   +'#_mc_msgs{flex:1;overflow-y:auto;padding:16px;min-height:240px;max-height:300px;display:flex;flex-direction:column;gap:10px;background:#fafafa}'
-  +'.mc_msg{max-width:80%;padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.5;word-wrap:break-word;white-space:pre-wrap}'
+  +'.mc_msg{max-width:80%;padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.5;word-wrap:break-word}'
   +'.mc_bot{background:#fff;color:#1a1a1a;align-self:flex-start;border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.08)}'
   +'.mc_usr{background:${c};color:#fff;align-self:flex-end;border-bottom-right-radius:4px}'
   +'.mc_typing{color:#aaa;font-size:12px;padding:2px 0;align-self:flex-start}'
@@ -71,10 +71,19 @@ function generateWidget(
   var leadEl=document.getElementById('_mc_lead');
   var inpRow=document.getElementById('_mc_inp_row');
 
+  function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function linkify(t){
+    var escaped=escHtml(t);
+    // Convert URLs to clickable links
+    escaped=escaped.replace(/(https?:\/\/[^\s<>"]+)/g,'<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;word-break:break-all">$1</a>');
+    // Convert newlines to <br>
+    escaped=escaped.replace(/\n/g,'<br>');
+    return escaped;
+  }
   function addMsg(role,text){
     var d=document.createElement('div');
     d.className='mc_msg '+(role==='assistant'?'mc_bot':'mc_usr');
-    d.textContent=text;
+    d.innerHTML=linkify(text);
     msgsEl.appendChild(d);
     msgsEl.scrollTop=msgsEl.scrollHeight;
     return d;
