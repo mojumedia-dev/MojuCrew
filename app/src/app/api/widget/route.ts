@@ -153,17 +153,18 @@ export async function GET(req: NextRequest) {
   }
 
   const supabase = createServerSupabase();
-  const { data: row } = await supabase
+  const { data: rows } = await supabase
     .from("bot_configs")
     .select("config")
-    .eq("bot_id", "chat")
-    .contains("config", { chatKey: key })
-    .maybeSingle();
+    .eq("bot_id", "chat");
+
+  const row = rows?.find(
+    (r) => (r.config as Record<string, unknown>).chatKey === key
+  );
 
   if (!row) {
-    // Return a visible error widget so we can debug in browser console
     return new Response(`console.error('[MojuChat] Widget key not found: ${key}');`, {
-      status: 200, // 200 so script loads but logs error
+      status: 200,
       headers: { "Content-Type": "application/javascript", "Cache-Control": "no-cache" },
     });
   }

@@ -182,12 +182,14 @@ export async function POST(req: NextRequest) {
     const supabase = createServerSupabase();
 
     // Look up bot config by chat key
-    const { data: row, error: dbErr } = await supabase
+    const { data: rows, error: dbErr } = await supabase
       .from("bot_configs")
       .select("config, user_id")
-      .eq("bot_id", "chat")
-      .contains("config", { chatKey: key })
-      .maybeSingle();
+      .eq("bot_id", "chat");
+
+    const row = rows?.find(
+      (r) => (r.config as Record<string, unknown>).chatKey === key
+    );
 
     if (dbErr || !row) {
       return NextResponse.json({ error: "Invalid key" }, {
