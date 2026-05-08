@@ -60,6 +60,66 @@ export async function getGoogleAccounts(userId: string) {
   return res.json();
 }
 
+interface GoogleLocation {
+  name: string;       // resource name, e.g. "locations/123"
+  title: string;
+  storeCode?: string;
+}
+
+// List locations under a Google account.
+export async function getGoogleLocations(
+  userId: string,
+  accountName: string,
+): Promise<GoogleLocation[] | null> {
+  const token = await getValidAccessToken(userId);
+  if (!token) return null;
+
+  const res = await fetch(
+    `https://mybusinessbusinessinformation.googleapis.com/v1/${accountName}/locations?readMask=name,title,storeCode`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  if (!res.ok) return null;
+  const data = (await res.json()) as { locations?: GoogleLocation[] };
+  return data.locations ?? [];
+}
+
+// Best-effort match a user-supplied location name (from the onboarding wizard)
+// to a Google Business location the user owns. Returns the resolved IDs the
+// reviews API needs, or null if no match found.
+export async function resolveGoogleLocation(
+  userId: string,
+  displayName: string,
+): Promise<{ accountName: string; locationName: string; matchedTitle: string } | null> {
+  const accountsResp = await getGoogleAccounts(userId);
+  const accounts = (accountsResp?.accounts ?? []) as Array<{ name: string; accountName: string }>;
+  if (accounts.length === 0) return null;
+
+  const target = displayName.trim().toLowerCase();
+
+  for (const acct of accounts) {
+    const locations = await getGoogleLocations(userId, acct.name);
+    if (!locations) continue;
+
+    // Exact-ish match first, then contains.
+    const exact = locations.find((l) => l.title?.trim().toLowerCase() === target);
+    const contains = locations.find(
+      (l) =>
+        l.title?.toLowerCase().includes(target) ||
+        target.includes(l.title?.toLowerCase() ?? ""),
+    );
+    const match = exact ?? contains;
+    if (match) {
+      return {
+        accountName: acct.name,
+        locationName: match.name,
+        matchedTitle: match.title,
+      };
+    }
+  }
+
+  return null;
+}
+
 // Fetch reviews for a specific location
 export async function fetchReviews(userId: string, accountId: string, locationId: string) {
   const token = await getValidAccessToken(userId);

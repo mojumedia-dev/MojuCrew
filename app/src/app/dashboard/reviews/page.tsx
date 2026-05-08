@@ -203,6 +203,145 @@ const STEPS: WizardStep[] = [
   },
 ];
 
+interface ReviewRow {
+  id: string;
+  platform: string;
+  rating: number;
+  reviewer_name: string | null;
+  review_text: string | null;
+  posted_at: string | null;
+  reply_text: string | null;
+  reply_posted_at: string | null;
+  reply_status: string | null;
+  alerted_at: string | null;
+  review_locations?: { display_name: string | null } | null;
+}
+
+interface FeedData {
+  reviews: ReviewRow[];
+  stats: { count30d: number; avgRating30d: number | null; replied30d: number; alerts30d: number };
+  lastSync: { ran_at: string; ok: boolean } | null;
+}
+
+function ActivityFeed() {
+  const [data, setData] = useState<FeedData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/reviews/list?limit=20")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setData(d))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <div className="text-sm text-gray-400">Loading recent reviews…</div>;
+  if (!data) return null;
+
+  const { stats, reviews, lastSync } = data;
+  const lastSyncLabel = lastSync
+    ? `Last sync ${new Date(lastSync.ran_at).toLocaleString()}`
+    : "Awaiting first sync";
+
+  return (
+    <>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <StatCard label="Avg rating (30d)" value={stats.avgRating30d != null ? `${stats.avgRating30d} ★` : "—"} />
+        <StatCard label="New reviews (30d)" value={String(stats.count30d)} />
+        <StatCard label="AI replies sent" value={String(stats.replied30d)} />
+        <StatCard label="Alerts" value={String(stats.alerts30d)} highlight={stats.alerts30d > 0} />
+      </div>
+      <div className="bg-white rounded-xl border">
+        <div className="flex items-center justify-between px-6 py-4 border-b">
+          <h2 className="text-base font-semibold text-gray-900">Recent reviews</h2>
+          <span className="text-xs text-gray-500">{lastSyncLabel}</span>
+        </div>
+        {reviews.length === 0 ? (
+          <div className="px-6 py-10 text-center text-sm text-gray-500">
+            No reviews yet — the next hourly sync will pull anything new.
+          </div>
+        ) : (
+          <ul className="divide-y">
+            {reviews.map((r) => (
+              <ReviewRowItem key={r.id} review={r} />
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
+  );
+}
+
+function StatCard({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
+  return (
+    <div
+      className={`rounded-xl border p-4 ${
+        highlight ? "border-amber-200 bg-amber-50" : "bg-white"
+      }`}
+    >
+      <div className="text-xs text-gray-500">{label}</div>
+      <div className={`mt-1 text-xl font-semibold ${highlight ? "text-amber-800" : "text-gray-900"}`}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function ReviewRowItem({ review }: { review: ReviewRow }) {
+  const stars = "★★★★★".slice(0, review.rating) + "☆☆☆☆☆".slice(0, 5 - review.rating);
+  const isNegative = review.rating <= 2;
+  return (
+    <li className="px-6 py-4">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 text-sm">
+            <span className={isNegative ? "text-red-600" : "text-amber-500"}>{stars}</span>
+            <span className="text-gray-900 font-medium truncate">
+              {review.reviewer_name ?? "Anonymous"}
+            </span>
+            <span className="text-xs text-gray-400">
+              {review.review_locations?.display_name ?? review.platform}
+            </span>
+          </div>
+          {review.review_text && (
+            <p className="mt-1.5 text-sm text-gray-700 line-clamp-3">{review.review_text}</p>
+          )}
+          {review.reply_text && (
+            <div className="mt-3 ml-4 pl-3 border-l-2 border-gray-200">
+              <div className="text-xs text-gray-500 mb-0.5">
+                {review.reply_status === "posted" ? "Posted reply" : "Drafted reply"}
+              </div>
+              <p className="text-sm text-gray-700 line-clamp-3">{review.reply_text}</p>
+            </div>
+          )}
+        </div>
+        <div className="text-right shrink-0">
+          <ReplyBadge status={review.reply_status} />
+          <div className="mt-1 text-xs text-gray-400">
+            {review.posted_at ? new Date(review.posted_at).toLocaleDateString() : ""}
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+}
+
+function ReplyBadge({ status }: { status: string | null }) {
+  const map: Record<string, { label: string; cls: string }> = {
+    posted: { label: "Replied", cls: "bg-green-100 text-green-700" },
+    pending: { label: "Pending", cls: "bg-gray-100 text-gray-700" },
+    drafted: { label: "Drafted", cls: "bg-blue-100 text-blue-700" },
+    manual: { label: "Manual", cls: "bg-amber-100 text-amber-800" },
+    failed: { label: "Failed", cls: "bg-red-100 text-red-700" },
+    skipped: { label: "Skipped", cls: "bg-gray-100 text-gray-500" },
+  };
+  const meta = (status && map[status]) || { label: status ?? "—", cls: "bg-gray-100 text-gray-600" };
+  return (
+    <span className={`inline-block text-xs px-2 py-0.5 rounded-full font-medium ${meta.cls}`}>
+      {meta.label}
+    </span>
+  );
+}
+
 export default function MojuReviewsPage() {
   const { config, loaded, reconfiguring, setReconfiguring, save, clear } = useBotConfig("reviews");
 
@@ -249,6 +388,7 @@ export default function MojuReviewsPage() {
 
       {config && !reconfiguring ? (
         <div className="space-y-5">
+          <ActivityFeed />
           <div className="bg-white rounded-xl border p-6">
             <h2 className="text-base font-semibold text-gray-900 mb-4">Configuration</h2>
             <div className="grid grid-cols-2 gap-4 text-sm">
